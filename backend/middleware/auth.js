@@ -5,9 +5,9 @@ const User = require('../models/user')
 
 
 //check if user is logged in (has valid access token)
-const loginCheck = async (res , res, next) =>{
+const loginCheck = async (req , res, next) =>{
     try{
-        const token = req.headers('Authorization')?.replace('Bearer ', '')
+        const token = req.get('Authorization')?.replace('Bearer ', '')
         if (!token) {
             return res.status(401).json({
                 success: false,
