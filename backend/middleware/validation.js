@@ -27,7 +27,7 @@ const signupValidation = [
         .isLength({min:8, max:128})
         .withMessage('Password must be between 8-128 characters'),
     //password confirmation rules : required field, must match password field
-    body('passwordCOnfirmation')
+    body('passwordConfirmation')
         .notEmpty()
         .withMessage('Password confirmation is required')
         .custom((value, {req}) =>{

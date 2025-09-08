@@ -12,7 +12,11 @@ app.use(express.json())
 const cookieParser = require('cookie-parser')
 app.use(cookieParser())
 
+//routes
+const authRoutes = require('./routes/auth')
+app.use('/api/auth', authRoutes)
 
+//port
 const PORT = process.env.PORT || 5000
 
 mongoose.connect(process.env.MONGO_URI)

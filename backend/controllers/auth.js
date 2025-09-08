@@ -6,13 +6,13 @@ const {
 } = require('../utils/jwt')
 
 class AuthController {
-    //User Registration
+    // User Registration
     async signup(req,res) {
         try{
             const {name, email, password} = req.body
 
             //check if user existed
-            const existingUser = await User.findOne({email})
+            const existingUser = await User.findOne({email})                    //----------------> check if user exists (NO)
             if(existingUser){
                 return res.status(400).json({
                     success: false,
@@ -20,14 +20,14 @@ class AuthController {
                 })
             }
             //create new user
-            const user = new User({name, email, password})
+            const user = new User({name, email, password})                      //----------------> create new user
             await user.save()
 
             //generate tokens
-            const accessToken = generateAccessToken({userId: user._id})
-            const refreshToken = generateRefreshToken({userId: user._id})
+            const accessToken = generateAccessToken({userId: user._id})         //----------------> generate access & refresh token
+            const refreshToken = generateRefreshToken({userId: user._id})       
 
-            res.status(201).json({
+            res.status(201).json({                                              //----------------> send response that account is created
                 success: true,
                 message: "User created successfully",
                 accessToken,
@@ -46,13 +46,13 @@ class AuthController {
             })
         }
     }
-    //user log in
+    // User Login
     async postSignin(req,res){
         try{
             const {email, password} = req.body
 
             //find user by email
-            const user = await User.findOne({email})
+            const user = await User.findOne({email})                            //----------------> find user by email (YES)
             if(!user){
                 return res.status(401).json({
                     success: false,
@@ -100,7 +100,7 @@ class AuthController {
     async logout(req ,res){
         try{
             const refreshToken = req.cookies.refreshToken
-
+            //if refresh token exists
             if (refreshToken){
                 //clear refresh token from db
                 const decoded = verifyRefreshToken(refreshToken)
