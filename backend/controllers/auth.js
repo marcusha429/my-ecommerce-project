@@ -70,12 +70,18 @@ class AuthController {
             //if email and password found -> create tokens
             const accessToken = generateAccessToken({userId: user._id})
             const refreshToken = generateRefreshToken({userId: user._id})
-            
+            await User.findByIdAndUpdate(user._id, {refreshToken})
+                
+            res.cookie('refreshToken', refreshToken, {
+                httpOnly: true, //prevent XSS attack
+                secure: process.env.NODE_ENV === 'production', //HTTPS only in production
+                sameSite: 'Strict', //CSRF protection
+                maxAge: 7*24*60*60*1000 //7 days in ms
+            })
             res.status(200).json({
                 success: true,
                 message: "Login successful",
                 accessToken,
-                refreshToken,
                 user: {
                     id: user._id,
                     name: user.name,
@@ -91,20 +97,46 @@ class AuthController {
         }
     }
 
+    async logout(req ,res){
+        try{
+            const refreshToken = req.cookies.refreshToken
+
+            if (refreshToken){
+                //clear refresh token from db
+                const decoded = verifyRefreshToken(refreshToken)
+                await User.findByIdAndUpdate(decoded.userId, {refreshToken: null})
+            }
+            //clear refresh token cookie
+            res.clearCookie('refreshToken')
+
+            res.json({
+                success: true, 
+                message: "Logged out successfully"
+            })
+        }catch(error){
+            //if error, clear cookie anyway
+            res.clearCookie('refreshToken')
+            res.json({
+                success: true,
+                message: "Logged out successfully"
+            })
+        }
+    }
+
     //Refresh access token
     async refreshToken(req,res){
         try{
-            const {refreshToken} = req.body
+            const refreshToken = req.cookies.refreshToken //read from cookie
             if (!refreshToken){
                 return res.status(401).json({
                     success: false, 
-                    message: "Refresh token reuquired"
+                    message: "Refresh token not found in cookies"
                 })
             }
             //verify refresh token
             const decoded = verifyRefreshToken(refreshToken)
             const user = await User.findById(decoded.userId)
-            if (!user){
+            if (!user || user.refreshToken != refreshToken){
                 return res.status(401).json({
                     success:false,
                     message: "Invalid refresh token"
