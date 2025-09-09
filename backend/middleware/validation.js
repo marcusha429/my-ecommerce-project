@@ -6,7 +6,7 @@ const signupValidation = [
     //name rules : required field, 3 -> 25 characters, only letters & spaces, trim whitespace
     body('name')
         .notEmpty()
-        .withMessage('Email is required')
+        .withMessage('Name is required')
         .isLength({min:3, max:25})
         .withMessage('Name must be between 3-25 characters')
         .matches(/^[a-zA-Z\s]+$/)

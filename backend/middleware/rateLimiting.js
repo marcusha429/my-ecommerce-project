@@ -1,12 +1,12 @@
 const rateLimit = require('express-rate-limit')
 
 //limit login attempts (prevent brute-force)
-const loginRateLimit = rateLimit({
+const signinRateLimit = rateLimit({
     windowMs: 15*60*1000, //15m
     max: 5, //5 attemps
     message: {
         success: false,
-        message: "Too many login attemps from this IP, please try again after 15 minutes"
+        message: "Too many login attempts from this IP, please try again after 15 minutes"
     },
     standardHeaders: true, //return rate limit info in RateLimit-* headers
     legacyHeaders: false, //Disable X-RateLimit-* headers
@@ -25,7 +25,7 @@ const signupRateLimit = rateLimit({
     legacyHeaders: false,
 })
 
-//rate limit for password for refresh token requests
+//rate limit for password for refresh token requests 
 const refreshTokenRateLimit = rateLimit({
     windowMs: 15*60*1000, //15m
     max: 10, //10 refresh attemps per IP per window
@@ -37,7 +37,7 @@ const refreshTokenRateLimit = rateLimit({
     legacyHeaders: false,
 })
 
-//general API rate limit
+//general API rate limit (API protection)
 const generalApiRateLimit = rateLimit({
     windowMs: 15*60*1000, //15m
     max: 100,   //100 requests per IP per window
@@ -50,7 +50,7 @@ const generalApiRateLimit = rateLimit({
 })
 
 module.exports = {
-    loginRateLimit,
+    signinRateLimit,
     signupRateLimit,
     refreshTokenRateLimit,
     generalApiRateLimit

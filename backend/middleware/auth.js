@@ -1,7 +1,7 @@
   //Check every rerequest before it reaches the protected route
 
   const {verifyAccessToken} = require('../utils/jwt')
-  const User = require('../models/user')
+  const User = require('../models/User')
 
 
   //check if user is logged in (has valid access token)
