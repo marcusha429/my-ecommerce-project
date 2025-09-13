@@ -105,5 +105,28 @@ export const authService = {
                 message: 'Logged out'
             }
         }
+    },
+
+    //refresh token
+    refreshToken: async(): Promise<AuthResponse> =>{
+        try{
+            //call backend
+            //refresh token auto sent as cookie
+            const response = await api.post('/refresh')
+
+            //success -> store new access token
+            if (response.data.success && response.data.accessToken){
+                localStorage.setItem('accessToken', response.data.accessToken)
+            }
+            return response.data
+        }catch(error){
+            //if fail, clear everything, must relogin
+            localStorage.removeItem('accessToken')
+            return {
+                success:false,
+                message: 'Session expired'
+            }
+        }
     }
+
 }
