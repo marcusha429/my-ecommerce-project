@@ -30,9 +30,9 @@ export default function SignupPage(){
     }
 
     const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault()
-        if(!validateForm()) return //stop this if validation failed
-        setIsLoading(true)
+        e.preventDefault() //prevent page refresh
+        if(!validateForm()) return //doesn't continue if validate fails
+        setIsLoading(true) //only run if validate pass
 
         const signupData: SignupData = {
             name,

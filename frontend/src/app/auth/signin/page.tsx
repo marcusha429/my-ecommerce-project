@@ -7,10 +7,12 @@ export default function SigninPage() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [isLoading, setIsLoading] = useState(false)
+    const [errors, setErrors] = useState<{[key:string]:string}>({})
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault() //prevent page refresh
         setIsLoading(true)
+        setErrors({})
 
         //create data object to send to backend
         const signinData: SigninData = { //Typescript interface
@@ -22,14 +24,21 @@ export default function SigninPage() {
             const response = await authService.signin(signinData) //call authService from auth.ts
 
             if (response.success){
-                alert('Login successful!')
+                setErrors({success: 'Login successful! Redirecting...'})
+                // alert('Login successful!')
                 console.log('User data:', response.user)
+                //TODO: Redirect to dashboard
             }else{
-                alert(`Login failed: ${response.message}`)
-                console.log('Error:', response.errors)
+                if (response.errors){
+                    setErrors(response.errors) //backend validation errors
+                }else{
+                    setErrors({general: response.message})
+                }
+                // alert(`Login failed: ${response.message}`)
+                // console.log('Error:', response.errors)
             }
         }catch(error){
-            alert('Something went wrong. Please try again.')
+            setErrors({general: 'Something went wrong. Please try again.'})
             // console.error('Signin error:', error)
         }finally{
             setIsLoading(false) //stop loading
@@ -102,8 +111,33 @@ export default function SigninPage() {
                             borderRadius: '4px',
                             fontSize: '14px',
                             color: 'black'
-                        }}
-                        />
+                        }}/>
+                    {/*Success message*/}
+                    {errors.success && (
+                        <div style={{
+                            padding: '10px',
+                            borderRadius: '4px',
+                            marginBottom: '15px',
+                            backgroundColor: '#d4edda',
+                            color: '#155724',
+                            border: '1px solid #c3e6cb'
+                        }}>
+                            {errors.success}
+                        </div>
+                    )}
+                    {/*General error message*/}
+                    {errors.general && (
+                        <div style={{
+                            padding: '10px',
+                            borderRadius: '4px',
+                            marginBottom: '15px',
+                            backgroundColor: '#f8d7da',
+                            color: '#721c24',
+                            border: '1px solid #f5c6cb'
+                        }}>
+                            {errors.general}
+                        </div>
+                    )}
                     <button 
                         type="submit"
                         disabled={isLoading} //disable when loading

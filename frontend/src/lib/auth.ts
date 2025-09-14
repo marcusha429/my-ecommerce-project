@@ -1,7 +1,7 @@
 import axios from 'axios' //comnicate with backend API //1
 import Cookies from 'js-cookie' //2
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/auth' //3
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api' //3
 
 const api = axios.create({
     baseURL: API_URL, //from .env.local
@@ -41,7 +41,7 @@ export const authService = {
     signup: async (data: SignupData): Promise<AuthResponse> =>{
         try{
             console.log('Sending signup request to backend...')
-            const response = await api.post('/signup', data)
+            const response = await api.post('/auth/signup', data)
             console.log('Signup reponse' , response.data)
 
             return response.data
@@ -66,7 +66,7 @@ export const authService = {
     signin: async (data: SigninData): Promise<AuthResponse> =>{
         try{
             console.log('Sending signin request to backend...')
-            const response = await api.post('/signin', data)
+            const response = await api.post('/auth/signin', data)
             console.log('Signin reponse', response.data)
 
             //If login successful, store access token in cookie
@@ -95,7 +95,7 @@ export const authService = {
     //logout
     logout: async(): Promise<AuthResponse> =>{
         try{
-            const response = await api.post('/logout')
+            const response = await api.post('/auth/logout')
             localStorage.removeItem('accessToken')
             return response.data
         }catch(error:any){
@@ -112,7 +112,7 @@ export const authService = {
         try{
             //call backend
             //refresh token auto sent as cookie
-            const response = await api.post('/refresh')
+            const response = await api.post('/auth/refresh')
 
             //success -> store new access token
             if (response.data.success && response.data.accessToken){
