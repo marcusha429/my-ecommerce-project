@@ -13,8 +13,27 @@ export default function SignupPage(){
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [passwordConfirmation, setPasswordConfirmation] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
+    const [errors, setErrors] = useState<{[key:string]:string}>({})
+
+    const validateForm = () =>{
+        const newErrors: {[key:string]:string} = {}
+
+        if (!name.trim()) newErrors.name = 'Name is required'
+        if (!email.trim()) newErrors.email = 'Email is required'
+        if (!email.includes('@')) newErrors.email = 'Please enter a valid email'
+        if (password.length < 8 || password.length >128) newErrors.password = 'Password must be from 8 to 128 characters'
+        if (password !== passwordConfirmation) newErrors.passwordConfirmation = 'Password do not match'
+
+        setErrors(newErrors)
+        return Object.keys(newErrors).length === 0 //return true if no error
+    }
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
+        if(!validateForm()) return //stop this if validation failed
+        setIsLoading(true)
+
         const signupData: SignupData = {
             name,
             email,
@@ -32,6 +51,8 @@ export default function SignupPage(){
             }
         }catch(error){
             alert('Something went wrong, please try again.')
+        }finally{
+            setIsLoading(false)
         }
     }
 
@@ -61,11 +82,12 @@ export default function SignupPage(){
                         onChange={(e) => setName(e.target.value)}
                         style={{
                             padding: '12px',
-                            border: '1px solid #ddd',
+                            border: errors.name ?  '1px solid red':'1px solid #ddd',
                             borderRadius: '4px',
                             fontSize: '14px',
                             color: 'black'
                         }}/>
+                        {errors.name && <p style={{color: 'red', fontSize: '12px', margin: '5px 0'}}>{errors.name}</p>}
                     <input
                         type='email'
                         placeholder='Email'
@@ -73,11 +95,12 @@ export default function SignupPage(){
                         onChange={(e) => setEmail(e.target.value)}
                         style={{
                             padding: '12px',
-                            border: '1px solid #ddd',
+                            border: errors.email? '1px solid red':'1px solid #ddd',
                             borderRadius: '4px',
                             fontSize: '14px',
                             color: 'black'
                         }}/>
+                        {errors.email && <p style={{color: 'red', fontSize: '12px', margin: '5px 0'}}>{errors.email}</p>}
                     <input 
                         type='password'
                         placeholder='Password'
@@ -85,11 +108,12 @@ export default function SignupPage(){
                         onChange={(e)=>setPassword(e.target.value)}
                         style={{
                             padding: '12px',
-                            border: '1px solid #ddd',
+                            border: errors.password? '1px solid red':'1px solid #ddd',
                             borderRadius: '4px',
                             fontSize: '14px',
                             color: 'black'
                         }}/>
+                        {errors.password && <p style={{color: 'red', fontSize: '12px', margin: '5px 0'}}>{errors.password}</p>}
                     <input
                         type='password'
                         placeholder='Confirm Your Password'
@@ -97,23 +121,25 @@ export default function SignupPage(){
                         onChange={(e) => setPasswordConfirmation(e.target.value)}
                         style={{
                             padding: '12px',
-                            border: '1px solid #ddd',
+                            border: errors.passwordConfirmation? '1px solid red':'1px solid #ddd',
                             borderRadius: '4px',
                             fontSize: '14px',
                             color: 'black'
                         }}/>
+                        {errors.passwordConfirmation && <p style={{color: 'red', fontSize: '12px', margin: '5px 0'}}>{errors.passwordConfirmation}</p>}
                     <button
                         type='submit'
+                        disabled={isLoading}
                         style={{
                             padding: '12px',
-                            backgroundColor: '#007bff',
+                            backgroundColor: isLoading ? '#ccc' : '#007bff',
                             color: 'white',
                             border: 'none',
                             borderRadius: '4px',
                             fontSize: '16px',
-                            cursor: 'pointer'
+                            cursor: isLoading ? 'not-allowed':'pointer'
                         }}>
-                            Sign Up 
+                            {isLoading ? 'Signing up...' : 'Sign Up'} 
                     </button>
                     <div style={{textAlign: 'center', marginTop: '20px'}}>
                         <span style={{color: 'black'}}>

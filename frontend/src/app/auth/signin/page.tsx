@@ -6,9 +6,11 @@ import {authService, SigninData } from '@/lib/auth'
 export default function SigninPage() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault() //prevent page refresh
+        setIsLoading(true)
 
         //create data object to send to backend
         const signinData: SigninData = { //Typescript interface
@@ -27,8 +29,10 @@ export default function SigninPage() {
                 console.log('Error:', response.errors)
             }
         }catch(error){
-            alert('Something want wrong. Please try again.')
-            console.error('Signin error:', error)
+            alert('Something went wrong. Please try again.')
+            // console.error('Signin error:', error)
+        }finally{
+            setIsLoading(false) //stop loading
         }
         // console.log('Email: ', email)
         // console.log('Password: ', password)
@@ -102,16 +106,17 @@ export default function SigninPage() {
                         />
                     <button 
                         type="submit"
+                        disabled={isLoading} //disable when loading
                         style={{
                             padding: '12px',
-                            backgroundColor: '#007bff', //blue button
+                            backgroundColor: isLoading ? '#ccc' : '#007bff', //blue button
                             color: 'white',
                             border: 'none',
                             borderRadius: '4px',
                             fontSize: '16px',
-                            cursor: 'pointer' //show the hand pointer when move the mouse into
+                            cursor: isLoading ? 'not-allowed' : 'pointer' //show the hand pointer when move the mouse into
                         }}
-                        >Sign In
+                        >{isLoading ? 'Signing in...' : 'Sign In'}
                     </button>
                     <div style={{textAlign: 'center', marginTop:'20px'}}>
                         <span style={{color: 'black'}}>
