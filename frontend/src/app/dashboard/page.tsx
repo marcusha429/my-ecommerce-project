@@ -14,43 +14,53 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
-import { authService } from '@/lib/auth';
+import { useState, useEffect } from 'react'
+import { authService } from '@/lib/auth'
+
+interface Product {
+  _id: string;
+  name: string;
+  description: string;
+  price: number;
+  images: string[];
+  category: string;
+  featured: boolean;
+  trending: boolean;
+  stock: number;
+  brand: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
+const gradients = [
+  'from-blue-900 to-blue-700 text-white',
+  'from-purple-600 to-pink-600 text-white',
+  'from-slate-900 to-slate-700 text-white'
+]
 
 export default function DashboardPage() {
-  const [user, setUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [errors, setErrors] = useState('');
+  const [user, setUser] = useState(null)
+  const [newArrivals, setNewArrivals] = useState<Product[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [errors, setErrors] = useState('')
 
-  const newArrivals = [
-    {
-      id: 1,
-      name: 'iPhone 15 Pro',
-      description: 'Titanium. So strong. So Light. So Pro.',
-      bgGradient: 'from-slate-900 to-slate-700',
-      textColor: 'text-white',
-      primaryBtn: 'bg-blue-600 hover:bg-blue-700',
-      secondaryBtn: 'bg-white text-black hover:bg-gray-100'
-    },
-    {
-      id: 2,
-      name: 'MacBook Pro',
-      description: 'Mind-blowing. Head-turning.',
-      bgGradient: 'from-gray-100 to-gray-200',
-      textColor: 'text-black',
-      primaryBtn: 'bg-black hover:bg-gray-800 text-white',
-      secondaryBtn: 'bg-blue-600 hover:bg-blue-700 text-white'
-    },
-    {
-      id: 3,
-      name: 'AirPods Pro',
-      description: 'Adaptive Audio. Now playing.',
-      bgGradient: 'from-purple-600 to-pink-600',
-      textColor: 'text-white',
-      primaryBtn: 'bg-white text-purple-600 hover:bg-gray-100',
-      secondaryBtn: 'bg-purple-800 hover:bg-purple-900'
+
+  const fetchFeaturedProducts = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/products/featured')
+      const data = await response.json()
+      setNewArrivals(data)
+      setIsLoading(false)
+    } catch (error) {
+      console.error('Error:', error)
+      setIsLoading(false)
     }
-  ];
+  }
+
+  useEffect(() => {
+    fetchFeaturedProducts()
+  }, [])
 
   const trendingProducts = [
     { id: 1, name: 'iPad Pro', price: '$999', image: 'iPad Image' },
@@ -124,27 +134,36 @@ export default function DashboardPage() {
           <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">New Arrivals</h2>
 
           {/* Products */}
-          {newArrivals.slice(0, 3).map((product) => (
-            <div
-              key={product.id}
-              className={`bg-gradient-to-r ${product.bgGradient} ${product.textColor} rounded-3xl p-8 md:p-12 mb-6 overflow-hidden relative`}>
-              <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center">
-                <div className="md:w-1/2 mb-6 md:mb-0">
-                  <h3 className="text-4xl md:text-6xl font-bold mb-4">{product.name}</h3>
-                  <p className="text-xl mb-6 opacity-80">{product.description}</p>
-                  <div className="flex gap-4">
-                    <button className={`${product.primaryBtn} base`}>Learn More</button>
-                    <button className={`${product.secondaryBtn} base`}>Buy</button>
+          {isLoading ? (
+            <div className='text-center py-8'>
+              <p className='text-gray-600'>Loading Featured Products...</p>
+            </div>
+          ) : (
+            newArrivals.slice(0, 3).map((product, index) => (
+              <div
+                key={product._id}
+                className={`bg-gradient-to-r ${gradients[index % gradients.length]} rounded-3xl p-8 md:p-12 mb-6 overflow-hidden relative`}>
+                <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center">
+                  <div className="md:w-1/2 mb-6 md:mb-0">
+                    <h3 className="text-4xl md:text-6xl font-bold mb-4">{product.name}</h3>
+                    <p className="text-xl mb-6 opacity-80">{product.description}</p>
+                    <p className='text-2xl font-bold mb-4 text-green-400'>${product.price}</p>
+                    <div className="flex gap-4">
+                      <button className='bg-white text-blue-900 hover:bg-gray-100 base'>Learn More</button>
+                      <button className='bg-blue-800 hover:bg-blue-900 text-white 
+  base'>Buy</button>
+                    </div>
                   </div>
-                </div>
-                <div className="md:w-1/2 flex justify-center">
-                  <div className="w-80 h-80 bg-black bg-opacity-20 rounded-2xl flex items-center justify-center">
-                    <span className="opacity-60">{product.name} Image</span>
+                  <div className="md:w-1/2 flex justify-center">
+                    <div className="w-80 h-80 bg-black bg-opacity-20 rounded-2xl flex items-center justify-center">
+                      <span className="opacity-60">{product.name} Image</span>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+
+          )}
         </section>
 
         {/* Trending Section*/}
