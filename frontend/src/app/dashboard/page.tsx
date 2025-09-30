@@ -33,17 +33,71 @@ interface Product {
   __v: number;
 }
 
+const categories = [
+  {
+    id: 1,
+    name: 'Phones and Tablets',
+    image: 'phones-tablets.jpg',
+    description: 'Latest smartphones and tablets',
+    bgColor: 'from-blue-500 to-blue-600'
+  },
+  {
+    id: 2,
+    name: 'Video Games',
+    image: 'video-games.jpg',
+    description: 'Gaming consoles and accessories',
+    bgColor: 'from-purple-500 to-purple-600'
+  },
+  {
+    id: 3,
+    name: 'Electronics',
+    image: 'electronics.jpg',
+    description: 'Latest tech and gadgets',
+    bgColor: 'from-green-500 to-green-600'
+  },
+  {
+    id: 4,
+    name: 'Cameras',
+    image: 'cameras.jpg',
+    description: 'Professional photography gear',
+    bgColor: 'from-red-500 to-red-600'
+  },
+  {
+    id: 5,
+    name: 'Accessories',
+    image: 'accessories.jpg',
+    description: 'Enhance your devices',
+    bgColor: 'from-yellow-500 to-yellow-600'
+  }
+]
+
 const gradients = [
-  'from-blue-900 to-blue-700 text-white',
-  'from-purple-600 to-pink-600 text-white',
-  'from-slate-900 to-slate-700 text-white'
+  'from-slate-900 to-slate-700 text-white',
+  'from-gray-100 to-gray-200 text-black',
+  'from-purple-600 to-pink-600 text-white'
+]
+
+const primaryBtn = [
+  'bg-blue-600 hover:bg-blue-700',
+  'bg-black hover:bg-gray-800 text-white',
+  'bg-white text-purple-600 hover:bg-gray-100',
+]
+
+const secondaryBtn = [
+  'bg-white text-black hover:bg-gray-100',
+  'bg-blue-600 hover:bg-blue-700 text-white',
+  'bg-purple-800 hover:bg-purple-900'
 ]
 
 export default function DashboardPage() {
   const [user, setUser] = useState(null)
   const [newArrivals, setNewArrivals] = useState<Product[]>([])
+  const [trendingProducts, setTrendingProducts] = useState<Product[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [errors, setErrors] = useState('')
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [isAutoScrolling, setIsAutoScrolling] = useState(true)
+
 
 
   const fetchFeaturedProducts = async () => {
@@ -58,18 +112,37 @@ export default function DashboardPage() {
     }
   }
 
+  const fetchTrendingProducts = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/products/trending')
+      const data = await response.json()
+      const trendingOnly = data.filter((product: Product) => !product.featured)
+      setTrendingProducts(trendingOnly)
+      setIsLoading(false)
+    } catch (error) {
+      console.error('Error:', error)
+      setIsLoading(false)
+    }
+  }
+
+  // Carusel Auto Scroll
+  const nextSlide = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === categories.length - 1 ? 0 : prevIndex + 1)
+  }
+
+  const prevSlide = () => {
+    setCurrentIndex((prevIndex) => prevIndex === 0 ? categories.length - 1 : prevIndex - 1)
+  }
+
+  const goToSlide = (index: number) => {
+    setCurrentIndex(index)
+  }
+
   useEffect(() => {
     fetchFeaturedProducts()
+    fetchTrendingProducts()
   }, [])
-
-  const trendingProducts = [
-    { id: 1, name: 'iPad Pro', price: '$999', image: 'iPad Image' },
-    { id: 2, name: 'Apple Watch', price: '$399', image: 'Watch Image' },
-    { id: 3, name: 'AirPods Max', price: '$549', image: 'AirPods Image' },
-    { id: 4, name: 'Mac Studio', price: '$1999', image: 'Mac Image' },
-    { id: 5, name: 'iPhone 14', price: '$799', image: 'iPhone Image' },
-    { id: 6, name: 'HomePod', price: '$299', image: 'HomePod Image' }
-  ];
 
   useEffect(() => {
     //get user data from local storage or API
@@ -133,7 +206,7 @@ export default function DashboardPage() {
         <section className="mb-12">
           <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">New Arrivals</h2>
 
-          {/* Products */}
+          {/* Loading & Products */}
           {isLoading ? (
             <div className='text-center py-8'>
               <p className='text-gray-600'>Loading Featured Products...</p>
@@ -149,33 +222,35 @@ export default function DashboardPage() {
                     <p className="text-xl mb-6 opacity-80">{product.description}</p>
                     <p className='text-2xl font-bold mb-4 text-green-400'>${product.price}</p>
                     <div className="flex gap-4">
-                      <button className='bg-white text-blue-900 hover:bg-gray-100 base'>Learn More</button>
-                      <button className='bg-blue-800 hover:bg-blue-900 text-white 
-  base'>Buy</button>
+                      <button className={`${primaryBtn[index % primaryBtn.length]} base`}>Learn More</button>
+                      <button className={`${secondaryBtn[index % secondaryBtn.length]} base`}>Buy</button>
                     </div>
                   </div>
                   <div className="md:w-1/2 flex justify-center">
                     <div className="w-80 h-80 bg-black bg-opacity-20 rounded-2xl flex items-center justify-center">
-                      <span className="opacity-60">{product.name} Image</span>
+                      <span className="opacity-60">{product.images} Image</span>
                     </div>
                   </div>
                 </div>
               </div>
             ))
-
           )}
         </section>
 
         {/* Trending Section*/}
         <section className="mb-12">
           <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">Trending Now</h2>
+          {/* Load Products */}iphone17.jpg
+
           <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 px-6">
             {trendingProducts.slice(0, 6).map((product) => (
-              <div key={product.id} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-                <span className="text-gray-500">{product.image}</span>
+              <div
+                key={product._id}
+                className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                <span className="text-gray-500">{product.images[0]}</span>
                 <div className="p-6">
                   <h3 className="text-xl font-semibold mb-2">{product.name}</h3>
-                  <p className="text-2xl font-bold text-gray-900 mb-4">{product.price}</p>
+                  <p className="text-2xl font-bold text-gray-900 mb-4">${product.price}</p>
                   <div className='flex gap-4'>
                     <button className={`learnMore base`}>Learn More</button>
                     <button className={`buy base`}>Buy</button>
