@@ -137,6 +137,8 @@ export default function DashboardPage() {
 
   const goToSlide = (index: number) => {
     setCurrentIndex(index)
+    setIsAutoScrolling(false) // Stop auto-scrolling on manual navigation
+    setTimeout(() => setIsAutoScrolling(true), 10000) //resume after 10 seconds
   }
 
   useEffect(() => {
@@ -160,6 +162,19 @@ export default function DashboardPage() {
     };
     checkAuth();
   }, []);
+
+  // Auto-slide carousel every 5 seconds
+  useEffect(() => {
+    if (!isAutoScrolling) return
+
+    const interval = setInterval(() => {
+      nextSlide()
+    }, 5000) // 5 seconds
+
+    return () => clearInterval(interval)
+  }, [currentIndex, isAutoScrolling])
+
+
   const handleLogout = async () => {
     try {
       await authService.logout();
@@ -262,8 +277,67 @@ export default function DashboardPage() {
         </section>
 
         {/* Categories Carousel*/}
-        <section className="mb-12">
-          <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">Shop by Category</h2>
+        <section className='mb-12 px-6'>
+          <h2 className='text-3xl font-bold text-center mb-8 text-gray-800'>Shop by Categories</h2>
+          {/* Carousel Container */}
+          <div className='relative max-w-7xl mx-auto'>
+            {/* Left Arrow */}
+            <button onClick={prevSlide} className='absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-3 shadow-lg hover:bg-gray-100 transition-all'>
+              <svg className='w-6 h-6' fill='none' stroke='currentColor' viewBox='0 0 24 24' >
+                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M15 19l-7-7 7-7' />
+              </svg>
+            </button>
+            {/* Right Arrow */}
+            <button onClick={nextSlide} className='absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-3 shadow-lg hover:bg-gray-100 transition-all'>
+              <svg className='w-6 h-6' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l 7 7-7 7'></path>
+              </svg>
+            </button>
+            {/* Slides */}
+            <div className='overflow-hidden py-8'>
+              <div className='flex items-center justify-center'>
+                {/*SHOW CARD*/}
+                {[-1, 0, 1].map((offset) => {
+                  const index = (currentIndex + offset + categories.length) % categories.length
+                  const category = categories[index]
+                  const isCenterCard = offset === 0
+
+                  return (
+                    <div
+                      key={category.id}
+                      className={`transition-all duration-500 ${isCenterCard
+                          ? 'scale-100 md:scale-110 opacity-100 z-10'
+                          : 'scale-75 md:scale-90 opacity-50'
+                        } hover:scale-105 md:hover:scale-115 cursor-pointer`}
+                      style={{ flex: '0 0 auto', width: '280px' }}
+                    >
+                      <div className={`bg-gradient-to-br ${category.bgColor} rounded-2xl p-6 h-80 flex flex-col justify-between shadow-xl`}>
+                        <div>
+                          <h3 className="text-white text-2xl font-bold mb-2">{category.name}</h3>
+                          <p className="text-white opacity-90 text-sm">{category.description}</p>
+                        </div>
+                        <div className="bg-white bg-opacity-20 rounded-xl h-32 flex items-center justify-center">
+                          <span className="text-white text-sm opacity-75">{category.image}</span>
+                        </div>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+            {/* Dots */}
+            <div className='flex justify-center gap-2 mt-6'>
+              {categories.map(
+                (_, index) => (
+                  <button key={index} onClick={() => goToSlide(index)}
+                    className={`transition-all ${index === currentIndex
+                      ? 'w-8 h-3 bg-blue-600'
+                      : 'w-3 h-3 bg-gray-300 hover:bg-gray-400'} rounded-full`}>
+                  </button>
+                )
+              )}
+            </div>
+          </div>
         </section>
       </main>
     </div>
