@@ -2,7 +2,7 @@
 
 
 import { useState, useEffect } from 'react'
-import DashboardHeader from '@/components/layout/DashboardHeader'
+import Header from '@/components/layout/Header'
 import ProductCard from '@/components/products/ProductCard'
 import CategoryCard from '@/components/carousel/CategoryCard'
 import CarouselArrow from '@/components/carousel/CarouselArrow'
@@ -44,7 +44,7 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <DashboardHeader />
+      <Header />
       <main>
         {/* New Arrivals Section */}
         <section className="mb-12">
@@ -66,32 +66,33 @@ export default function DashboardPage() {
           <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">
             Trending Now
           </h2>
-          <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 px-6">
-            {trendingProducts.slice(0, 6).map((product) => (
+          <div className=" mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+            {trendingProducts.slice(0, 6).map((product, index) => (
               <ProductCard
                 key={product._id}
                 product={product}
                 variant="trending"
+                index={index}
               />
             ))}
           </div>
         </section>
 
         {/* Categories Carousel Section */}
-        <section className="mb-12 px-6">
+        <section className="mb-12">
           <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">
             Shop by Category
           </h2>
 
-          <div className="relative max-w-7xl mx-auto">
+          <div className="relative ">
             <CarouselArrow direction="left" onClick={prevSlide} />
             <CarouselArrow direction="right" onClick={nextSlide} />
 
             {/* Carousel Container */}
-            <div className="overflow-hidden py-8">
-              <div className="flex items-center justify-center gap-4">
+            <div className="overflow-hidden py-8 px-6 w-full">
+              <div className="flex items-center justify-center gap-2 w-full px-6">
                 {/* Show 3 cards: previous, current, next */}
-                {[-2, -1, 0, 1, 2].map((offset) => {
+                {[-3, -2, -1, 0, 1, 2, 3].map((offset) => {
                   const index = (currentIndex + offset + categories.length) % categories.length
                   const category = categories[index]
                   const isCenterCard = offset === 0

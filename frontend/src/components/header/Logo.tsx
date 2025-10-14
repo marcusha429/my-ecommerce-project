@@ -1,0 +1,7 @@
+import Image from 'next/image'
+
+export default function Logo() {
+    return (
+        <Image src='/next.svg' alt='Logo' width={100} height={40} className='dark:invert'></Image>
+    )
+}

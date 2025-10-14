@@ -43,17 +43,27 @@ export default function ProductCard({
     // Trending variant
     return (
         <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-            <span className="text-gray-500">{product.images[0]}</span>
-            <div className="p-6">
-                <h3 className="text-xl font-semibold mb-2">{product.name}</h3>
-                <p className="text-2xl font-bold text-gray-900 mb-4">${product.price}</p>
-                <div className="flex gap-4">
-                    <button className="bg-black hover:bg-gray-800 text-white px-8 py-3 rounded-full font-semibold transition-colors">
-                        Learn More
-                    </button>
-                    <button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-full font-semibold transition-colors">
-                        Buy
-                    </button>
+            <div className="flex flex-col md:flex-row items-center p-6 gap-6">
+                {/* Product Image */}
+                <div className="w-full md:w-1/2 flex justify-center">
+                    <div className="w-48 h-48 md:w-64 md:h-64 bg-gray-100 rounded-2xl flex items-center justify-center">
+                        <span className="text-gray-400 text-sm">{product.images[0]}</span>
+                    </div>
+                </div>
+
+                {/* Product Info */}
+                <div className="w-full md:w-1/2">
+                    <h3 className="text-xl md:text-2xl font-semibold mb-2 text-gray-900">{product.name}</h3>
+                    <p className="text-sm md:text-base text-gray-600 mb-3">{product.description}</p>
+                    <p className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">${product.price}</p>
+                    <div className="flex gap-3 flex-wrap">
+                        <button className={`${primaryBtn[1]} px-8 py-3 rounded-full font-semibold transition-colors`}>
+                            Learn More
+                        </button>
+                        <button className={`${secondaryBtn[1]} px-8 py-3 rounded-full font-semibold transition-colors`}>
+                            Buy
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

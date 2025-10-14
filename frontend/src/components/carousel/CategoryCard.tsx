@@ -8,11 +8,11 @@ interface CategoryCardProps {
 export default function CategoryCard({ category, isCenterCard }: CategoryCardProps) {
     return (
         <div
-            className={`transition-all duration-500 cursor-pointer ${isCenterCard
-                ? 'scale-105 shadow-2xl'
-                : 'scale-100 hover:scale-105'
+            className={`transition-all duration-500 cursor-pointer  ${isCenterCard
+                ? 'scale-110 hover:scale-120 shadow-2xl blur-0'
+                : 'scale-90 hover:scale-110 blur-[2px] hover:blur-0'
                 }`}
-            style={{ flex: '0 0 auto', width: '280px' }}
+            style={{ flex: '1 0 auto', width: '280px' }}
         >
             <div className={`bg-gradient-to-br ${category.bgColor} rounded-2xl p-6 h-80 flex flex-col justify-between shadow-xl`}>
                 <div>
