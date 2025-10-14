@@ -44,7 +44,7 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
+      <Header isLoggedIn={true} userName="John Doe" userEmail="john@example.com" />
       <main>
         {/* New Arrivals Section */}
         <section className="mb-12">
