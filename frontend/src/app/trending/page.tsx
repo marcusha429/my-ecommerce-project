@@ -5,7 +5,7 @@ import Header from '@/components/layout/Header'
 import ProductGrid from '@/components/products/ProductGrid'
 import { useProducts } from '@/hooks/useProduct'
 
-export default function ArrivalsPage() {
+export default function TrendingPage() {
     const { trendingProducts, isLoading } = useProducts()
 
     if (isLoading) {
