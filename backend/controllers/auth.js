@@ -7,25 +7,25 @@ const {
 
 class AuthController {
     // User Registration
-    async signup(req,res) {
-        try{
-            const {name, email, password} = req.body
+    async signup(req, res) {
+        try {
+            const { name, email, password } = req.body
 
             //check if user existed
-            const existingUser = await User.findOne({email})                    //----------------> check if user exists (NO)
-            if(existingUser){
+            const existingUser = await User.findOne({ email })                    //----------------> check if user exists (NO)
+            if (existingUser) {
                 return res.status(400).json({
                     success: false,
                     message: "User already exists"
                 })
             }
             //create new user
-            const user = new User({name, email, password})                      //----------------> create new user
+            const user = new User({ name, email, password })                      //----------------> create new user
             await user.save()
 
             //generate tokens
-            const accessToken = generateAccessToken({userId: user._id})         //----------------> generate access & refresh token
-            const refreshToken = generateRefreshToken({userId: user._id})       
+            const accessToken = generateAccessToken({ userId: user._id })         //----------------> generate access & refresh token
+            const refreshToken = generateRefreshToken({ userId: user._id })
 
             res.status(201).json({                                              //----------------> send response that account is created
                 success: true,
@@ -38,7 +38,7 @@ class AuthController {
                     email: user.email
                 }
             })
-        } catch(error){
+        } catch (error) {
             res.status(500).json({
                 success: false,
                 message: "Server error",
@@ -47,13 +47,13 @@ class AuthController {
         }
     }
     // User Login
-    async postSignin(req,res){
-        try{
-            const {email, password} = req.body
+    async postSignin(req, res) {
+        try {
+            const { email, password } = req.body
 
             //find user by email
-            const user = await User.findOne({email})                            //----------------> find user by email (YES)
-            if(!user){
+            const user = await User.findOne({ email })                            //----------------> find user by email (YES)
+            if (!user) {
                 return res.status(401).json({
                     success: false,
                     message: "Invalid email or password"
@@ -61,34 +61,39 @@ class AuthController {
             }
             //if email found -> check password
             const isPasswordValid = await user.comparePassword(password)
-            if(!isPasswordValid){
+            if (!isPasswordValid) {
                 return res.status(401).json({
                     success: false,
                     message: "Invalid email or password",
                 })
             }
             //if email and password found -> create tokens
-            const accessToken = generateAccessToken({userId: user._id})
-            const refreshToken = generateRefreshToken({userId: user._id})
-            await User.findByIdAndUpdate(user._id, {refreshToken})
-                
+            const accessToken = generateAccessToken({ userId: user._id })
+            const refreshToken = generateRefreshToken({ userId: user._id })
+            await User.findByIdAndUpdate(user._id, { refreshToken })
+
             res.cookie('refreshToken', refreshToken, {
                 httpOnly: true, //prevent XSS attack
                 secure: process.env.NODE_ENV === 'production', //HTTPS only in production
                 sameSite: 'Strict', //CSRF protection
-                maxAge: 7*24*60*60*1000 //7 days in ms
+                maxAge: 7 * 24 * 60 * 60 * 1000 //7 days in ms
+            })
+            res.cookie('accessToken', accessToken, {
+                httpOnly: true, //prevent XSS attack
+                secure: process.env.NODE_ENV === 'production', //HTTPS only in production
+                sameSite: 'Strict', //CSRF protection
+                maxAge: 15 * 60 * 1000 //15 mins
             })
             res.status(200).json({
                 success: true,
                 message: "Login successful",
-                accessToken,
                 user: {
                     id: user._id,
                     name: user.name,
                     email: user.email
                 }
             })
-        }catch(error){
+        } catch (error) {
             res.status(500).json({
                 success: false,
                 message: "Server error",
@@ -97,23 +102,23 @@ class AuthController {
         }
     }
 
-    async logout(req ,res){
-        try{
+    async logout(req, res) {
+        try {
             const refreshToken = req.cookies.refreshToken
             //if refresh token exists
-            if (refreshToken){
+            if (refreshToken) {
                 //clear refresh token from db
                 const decoded = verifyRefreshToken(refreshToken)
-                await User.findByIdAndUpdate(decoded.userId, {refreshToken: null})
+                await User.findByIdAndUpdate(decoded.userId, { refreshToken: null })
             }
             //clear refresh token cookie
             res.clearCookie('refreshToken')
 
             res.json({
-                success: true, 
+                success: true,
                 message: "Logged out successfully"
             })
-        }catch(error){
+        } catch (error) {
             //if error, clear cookie anyway
             res.clearCookie('refreshToken')
             res.json({
@@ -124,32 +129,32 @@ class AuthController {
     }
 
     //Refresh access token
-    async refreshToken(req,res){
-        try{
+    async refreshToken(req, res) {
+        try {
             const refreshToken = req.cookies.refreshToken //read from cookie
-            if (!refreshToken){
+            if (!refreshToken) {
                 return res.status(401).json({
-                    success: false, 
+                    success: false,
                     message: "Refresh token not found in cookies"
                 })
             }
             //verify refresh token
             const decoded = verifyRefreshToken(refreshToken)
             const user = await User.findById(decoded.userId)
-            if (!user || user.refreshToken != refreshToken){
+            if (!user || user.refreshToken != refreshToken) {
                 return res.status(401).json({
-                    success:false,
+                    success: false,
                     message: "Invalid refresh token"
                 })
             }
             //if user found -> generate new access token by refreshToken of userid
-            const newAccessToken = generateAccessToken({userId: user._id})
+            const newAccessToken = generateAccessToken({ userId: user._id })
             res.json({
                 success: true,
                 message: "Access token generated successfully",
                 accessToken: newAccessToken
             })
-        }catch(error){
+        } catch (error) {
             res.staus(401).json({
                 success: false,
                 message: "Invalid refresh token",

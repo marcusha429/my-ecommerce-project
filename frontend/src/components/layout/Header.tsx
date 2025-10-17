@@ -45,7 +45,7 @@ export default function Header({
                 <div className='flex items-center gap-6 md:gap-8'>
 
                     {/* 1. Logo */}
-                    <Logo />
+                    <Logo isLoggedIn={isLoggedIn} />
 
                     {/* 2. Explore Button Dropdown */}
                     <Explore />

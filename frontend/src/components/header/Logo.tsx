@@ -1,7 +1,19 @@
 import Image from 'next/image'
 
-export default function Logo() {
+interface LogoProps {
+    isLoggedIn?: boolean
+}
+
+export default function Logo({ isLoggedIn = false }: LogoProps) {
+    const handleClick = () => {
+        //redirect to dashboard
+        const destination = isLoggedIn ? '/dashboard' : '/'
+        window.location.href = destination
+    }
+
     return (
-        <Image src='/next.svg' alt='Logo' width={100} height={40} className='dark:invert'></Image>
+        <div className='flex-shrirk-0 cursor-pointer' onClick={handleClick}>
+            <Image src='/next.svg' alt='Logo' width={100} height={40} className='dark:invert'></Image>
+        </div>
     )
 }

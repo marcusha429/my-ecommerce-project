@@ -1,9 +1,12 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
+const helmet = require('helmet')
 require('dotenv').config()
 
 const app = express()
+//security middleware
+app.use(helmet())
 
 app.use(cors({
     origin: 'http://localhost:3000',

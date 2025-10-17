@@ -2,17 +2,23 @@
 
 
 import { useState, useEffect } from 'react'
+
 import Header from '@/components/layout/Header'
 import ProductCard from '@/components/products/ProductCard'
 import CategoryCard from '@/components/carousel/CategoryCard'
 import CarouselArrow from '@/components/carousel/CarouselArrow'
 import CarouselDots from '@/components/carousel/CarouselDots'
+
 import { useProducts } from '@/hooks/useProduct'
 import { useCarousel } from '@/hooks/useCarousel'
 import { categories } from '@/constants/mockData'
 
 export default function DashboardPage() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [userName, setUserName] = useState('')
+  const [userEmail, setUserEmail] = useState('')
   const [isLoading, setIsLoading] = useState(true)
+
   const { featuredProducts, trendingProducts } = useProducts()
   const { currentIndex, nextSlide, prevSlide, goToSlide } = useCarousel({
     itemCount: categories.length
@@ -20,15 +26,12 @@ export default function DashboardPage() {
 
   useEffect(() => {
     const checkAuth = async () => {
-      // Uncomment to view loading session
-      // await new Promise(resolve => setTimeout(resolve, 2000))
-
-      // const token = localStorage.getItem('accessToken')
-      // if (!token) {
-      //   window.location.href = '/auth/signin'
-      //   return
-      // }
-
+      const token = localStorage.getItem('accessToken')
+      if (token) {
+        setIsLoggedIn(true)
+      } else {
+        setIsLoggedIn(false)
+      }
       setIsLoading(false)
     }
     checkAuth()
@@ -44,7 +47,7 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header isLoggedIn={true} userName="John Doe" userEmail="john@example.com" />
+      <Header isLoggedIn={isLoggedIn} userName={userName} userEmail={userEmail} />
       <main>
         {/* New Arrivals Section */}
         <section className="mb-12">
