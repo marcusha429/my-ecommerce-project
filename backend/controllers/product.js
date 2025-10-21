@@ -72,7 +72,7 @@ const updateProduct = async (req, res) => {
 
         if (!updatedProduct) {
             return res.status(404).json({
-                sucess: false,
+                success: false,
                 message: 'Product not found'
             })
         }
