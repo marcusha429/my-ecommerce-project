@@ -5,29 +5,34 @@ const bcrypt = require('bcryptjs')
 const userSchema = new mongoose.Schema(
     //name, email, password
     {
-        name:{
-            type:String,
+        name: {
+            type: String,
             required: true,
         },
-        email:{
+        email: {
             type: String,
             required: true,
             unique: true, //no duplicate emails in database
         },
-        password:{
+        password: {
             type: String,
             required: true,
         },
-        refreshToken:{
+        refreshToken: {
             type: String,
             default: null,
+        },
+        role: {
+            type: String,
+            enum: ['customer', 'admin'],
+            default: 'customer'
         }
     }
 )
 
 //hash password before saving to database
-userSchema.pre('save', async function(next){
-    if (!this.isModified('password')){
+userSchema.pre('save', async function (next) {
+    if (!this.isModified('password')) {
         return next()
     }
     this.password = await bcrypt.hash(this.password, 12)
@@ -35,7 +40,7 @@ userSchema.pre('save', async function(next){
 })
 
 //compare hashed password
-userSchema.methods.comparePassword = async function(password){
+userSchema.methods.comparePassword = async function (password) {
     return await bcrypt.compare(password, this.password)
 }
 

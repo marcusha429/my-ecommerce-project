@@ -60,10 +60,64 @@ const createProduct = async (req, res) => {
     }
 }
 
+const updateProduct = async (req, res) => {
+    try {
+        const productId = req.params.id
+        const updatedProduct = await Product.findByIdAndUpdate(
+            //findByIdAndUpdate(id, newData, options)
+            productId,
+            req.body, //new data from request
+            { new: true, runValidators: true } //option (return updated not the old one, validates before saving)
+        )
+
+        if (!updatedProduct) {
+            return res.status(404).json({
+                sucess: false,
+                message: 'Product not found'
+            })
+        }
+        res.json({
+            success: true,
+            product: updatedProduct
+        })
+    } catch (error) {
+        res.status(400).json({
+            success: false,
+            error: error.message
+        })
+    }
+}
+
+const deleteProduct = async (req, res) => {
+    try {
+        const productId = req.params.id
+        const deletedProduct = await Product.findByIdAndDelete(productId)
+
+        if (!deletedProduct) {
+            return res.status(404).json({
+                success: false,
+                message: 'Product not found'
+            })
+        }
+        res.json({
+            success: true,
+            message: 'Product deleted successfully',
+            product: deletedProduct
+        })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: error.message
+        })
+    }
+}
+
 module.exports = {
     getAllProducts,
     getFeaturedProducts,
     getTrendingProducts,
     getProductsByCategory,
-    createProduct
+    createProduct,
+    updateProduct,
+    deleteProduct
 }
