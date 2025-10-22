@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
-import Header from '@/components/layout/Header'
 import ProductGrid from '@/components/products/ProductGrid'
 import { Product } from '@/types/product'
 import { categories } from '@/constants/mockData'
@@ -21,7 +20,6 @@ export default function CategoryPage() {
     useEffect(() => {
         const fetchCategoryProducts = async () => {
             try {
-                //TODO: API call
                 const response = await fetch(`http://localhost:5000/api/products/category/${categorySlug}`)
                 const data = await response.json()
                 setProducts(data)
@@ -36,20 +34,17 @@ export default function CategoryPage() {
 
     if (isLoading) {
         return (
-            <div className='min-h-screen flex items-center justify-center'>
+            <div className='flex items-center justify-center py-12'>
                 <p>Loading...</p>
             </div>
         )
     }
 
     return (
-        <>
-            <Header isLoggedIn={true} />
-            <ProductGrid
-                products={products}
-                title={categoryName}
-                emptyMessage={`No products found in ${categoryName}`}
-            />
-        </>
+        <ProductGrid
+            products={products}
+            title={categoryName}
+            emptyMessage={`No products found in ${categoryName}`}
+        />
     )
 }
