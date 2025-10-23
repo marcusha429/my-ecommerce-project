@@ -78,19 +78,21 @@ class AuthController {
                 sameSite: 'Strict', //CSRF protection
                 maxAge: 7 * 24 * 60 * 60 * 1000 //7 days in ms
             })
-            res.cookie('accessToken', accessToken, {
-                httpOnly: true, //prevent XSS attack
-                secure: process.env.NODE_ENV === 'production', //HTTPS only in production
-                sameSite: 'Strict', //CSRF protection
-                maxAge: 15 * 60 * 1000 //15 mins
-            })
+            // res.cookie('accessToken', accessToken, {
+            //     httpOnly: true, //prevent XSS attack
+            //     secure: process.env.NODE_ENV === 'production', //HTTPS only in production
+            //     sameSite: 'Strict', //CSRF protection
+            //     maxAge: 15 * 60 * 1000 //15 mins
+            // })
             res.status(200).json({
                 success: true,
                 message: "Login successful",
+                accessToken: accessToken,
                 user: {
                     id: user._id,
                     name: user.name,
-                    email: user.email
+                    email: user.email,
+                    role: user.role
                 }
             })
         } catch (error) {
