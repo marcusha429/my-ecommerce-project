@@ -1,7 +1,7 @@
 import axios from 'axios' //comnicate with backend API //1
 import Cookies from 'js-cookie' //2
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api' //3
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000' //3
 
 const api = axios.create({
     baseURL: API_URL, //from .env.local
@@ -32,6 +32,7 @@ export interface AuthResponse {
         id: string
         name: string
         email: string
+        role: string
     }
     errors?: Record<string, string> //for validation errros like {"email": "Invalid email format"}
 }
@@ -41,7 +42,7 @@ export const authService = {
     signup: async (data: SignupData): Promise<AuthResponse> => {
         try {
             console.log('Sending signup request to backend...')
-            const response = await api.post('/auth/signup', data)
+            const response = await api.post('/api/auth/signup', data)
             console.log('Signup reponse', response.data)
 
             return response.data
@@ -66,13 +67,13 @@ export const authService = {
     signin: async (data: SigninData): Promise<AuthResponse> => {
         try {
             console.log('Sending signin request to backend...')
-            const response = await api.post('/auth/signin', data)
+            const response = await api.post('/api/auth/signin', data)
             console.log('Signin reponse', response.data)
 
             //If login successful, store access token in cookie
             if (response.data.success && response.data.accessToken) {
                 //Don't save local
-                // localStorage.setItem('accessToken', response.data.accessToken)
+                localStorage.setItem('accessToken', response.data.accessToken)
                 console.log('Access token stored in localStorage')
 
                 //Note: Refresh token is auto stored as http-only cookie by backend
@@ -96,7 +97,7 @@ export const authService = {
     //logout
     logout: async (): Promise<AuthResponse> => {
         try {
-            const response = await api.post('/auth/logout')
+            const response = await api.post('/api/auth/logout')
             localStorage.removeItem('accessToken')
             return response.data
         } catch (error: any) {
@@ -113,7 +114,7 @@ export const authService = {
         try {
             //call backend
             //refresh token auto sent as cookie
-            const response = await api.post('/auth/refresh')
+            const response = await api.post('/api/auth/refresh')
 
             //success -> store new access token
             if (response.data.success && response.data.accessToken) {

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Product } from '@/types/product'
+import { api } from '@/lib/api'
 
 export function useProducts() {
     const [featuredProducts, setFeaturedProducts] = useState<Product[]>([])
@@ -11,13 +12,11 @@ export function useProducts() {
         const fetchProducts = async () => {
             try {
                 // Fetch featured products
-                const featuredResponse = await fetch('http://localhost:5000/api/products/featured')
-                const featuredData = await featuredResponse.json()
+                const featuredData = await api.get('/api/products/featured')
                 setFeaturedProducts(featuredData)
 
                 // Fetch trending products
-                const trendingResponse = await fetch('http://localhost:5000/api/products/trending')
-                const trendingData = await trendingResponse.json()
+                const trendingData = await api.get('/api/products/trending')
                 const trendingOnly = trendingData.filter((product: Product) => !product.featured)
                 setTrendingProducts(trendingOnly)
 

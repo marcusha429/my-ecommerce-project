@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation'
 import ProductGrid from '@/components/products/ProductGrid'
 import { Product } from '@/types/product'
 import { categories } from '@/constants/mockData'
+import { api } from '@/lib/api'
 
 export default function CategoryPage() {
     const params = useParams()
@@ -21,7 +22,7 @@ export default function CategoryPage() {
         const fetchCategoryProducts = async () => {
             try {
                 const response = await fetch(`http://localhost:5000/api/products/category/${categorySlug}`)
-                const data = await response.json()
+                const data = await api.get(`/api/products/category/${categorySlug}`)
                 setProducts(data)
             } catch (error) {
                 console.error('Error fetching category products:', error)

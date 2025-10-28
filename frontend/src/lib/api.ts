@@ -1,5 +1,5 @@
 //Get API from environment variables
-const API_URL = process.env.NEXT_PUCBLIC_API_URL || 'http://localhost:5000/api'
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
 
 //Helper function to auth token from localStorage
 const getAuthToken = (): string | null => {
@@ -18,7 +18,7 @@ export const api = {
    * @returns JSON response
    */
     async get(endpoint: string) {
-        const response = await fetch(`$(API_URL)${endpoint}`)
+        const response = await fetch(`${API_URL}${endpoint}`)
         if (!response.ok) {
             throw new Error(`GET ${endpoint} failed: ${response.statusText}`)
         }

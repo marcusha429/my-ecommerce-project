@@ -28,8 +28,9 @@ export default function SigninPage() {
 
             if (response.success) {
                 setErrors({ success: 'Login successful! Redirecting...' })
+                const redirectPath = response.user?.role === 'admin' ? '/admin' : '/dashboard'
                 setTimeout(() => {
-                    router.push('/dashboard')
+                    router.push(redirectPath)
                 }, 1000)
             } else {
                 if (response.errors) {
