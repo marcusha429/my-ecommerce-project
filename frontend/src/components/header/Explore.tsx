@@ -22,7 +22,7 @@ export default function Explore() {
     return (
         <div className='relative'>
             {/* Explore button */}
-            <button onClick={toggleDropdown} className='px-4 py-2 text-gray-700 hover:text-blue-600 font-medium transition-colors flex items-center gap-1'>
+            <button onClick={toggleDropdown} className='px-4 py-2 text-gray-700 hover:text-emerald-600 font-medium transition-colors flex items-center gap-1'>
                 Explore
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />

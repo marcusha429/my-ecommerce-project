@@ -5,13 +5,13 @@ export const gradients = [
 ]
 
 export const primaryBtn = [
-  'bg-blue-600 hover:bg-blue-700',
+  'bg-emerald-600 hover:bg-emerald-700',
   'bg-black hover:bg-gray-800 text-white',
-  'bg-white text-purple-600 hover:bg-gray-100',
+  'bg-white text-emerald-600 hover:bg-gray-100',
 ]
 
 export const secondaryBtn = [
   'bg-white text-black hover:bg-gray-100',
-  'bg-blue-600 hover:bg-blue-700 text-white',
-  'bg-purple-800 hover:bg-purple-900'
+  'bg-emerald-600 hover:bg-emerald-700 text-white',
+  'bg-emerald-800 hover:bg-emerald-900'
 ]

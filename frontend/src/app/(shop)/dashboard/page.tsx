@@ -11,7 +11,7 @@ import { categories } from '@/constants/mockData'
 
 export default function DashboardPage() {
     const { featuredProducts, trendingProducts } = useProducts()
-    const { currentIndex, nextSlide, prevSlide, goToSlide } = useCarousel({
+    const { currentIndex, nextSlide, prevSlide, goToSlide, handleMouseEnter, handleMouseLeave } = useCarousel({
         itemCount: categories.length
     })
 
@@ -55,7 +55,11 @@ export default function DashboardPage() {
                     Shop by Category
                 </h2>
 
-                <div className="relative">
+                <div
+                    className="relative"
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
+                >
                     <CarouselArrow direction="left" onClick={prevSlide} />
                     <CarouselArrow direction="right" onClick={nextSlide} />
 
@@ -69,11 +73,15 @@ export default function DashboardPage() {
                                 const isCenterCard = offset === 0
 
                                 return (
-                                    <CategoryCard
+                                    <div
                                         key={`${category.id}-${offset}`}
-                                        category={category}
-                                        isCenterCard={isCenterCard}
-                                    />
+                                        onClick={() => !isCenterCard && goToSlide(index)}
+                                    >
+                                        <CategoryCard
+                                            category={category}
+                                            isCenterCard={isCenterCard}
+                                        />
+                                    </div>
                                 )
                             })}
                         </div>

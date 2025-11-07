@@ -23,15 +23,11 @@ const productSchema = new mongoose.Schema(
         category: {
             type: String,
             required: true,
-            enum: ['new-arrivals', 'trending', 'electronics', 'accessories']
+            enum: ['fruits-vegetables', 'dairy-eggs', 'meat-seafood', 'bakery', 'beverages', 'snacks', 'pantry']
         },
         featured: {
             type: Boolean,
             default: false
-        }, name: {
-            type: String,
-            required: true,
-            trim: true
         },
         trending: {
             type: Boolean,
@@ -42,9 +38,21 @@ const productSchema = new mongoose.Schema(
             default: 0,
             min: 0
         },
-        brand: String, specifications: {
-            color: String,
-            storage: String
+        brand: String,
+        unit: {
+            type: String,
+            enum: ['lb', 'kg', 'oz', 'piece', 'dozen', 'gallon', 'liter'],
+            default: 'piece'
+        },
+        weight: Number,
+        expirationDate: Date,
+        organic: { type: Boolean, default: false },
+        nutrition: {
+            calories: Number,
+            protein: Number,
+            carbs: Number,
+            fat: Number,
+            fiber: Number
         }
     },
     {

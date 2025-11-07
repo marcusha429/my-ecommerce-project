@@ -13,6 +13,7 @@ export function useCarousel({
 }: UseCarouselProps) {
     const [currentIndex, setCurrentIndex] = useState(0)
     const [isAutoScrolling, setIsAutoScrolling] = useState(true)
+    const [isHovered, setIsHovered] = useState(false)
 
     const nextSlide = () => {
         setCurrentIndex((prevIndex) =>
@@ -32,21 +33,32 @@ export function useCarousel({
         setTimeout(() => setIsAutoScrolling(true), pauseDuration)
     }
 
-    // Auto-slide effect
+    // Pause/resume auto-scrolling on hover
+    const handleMouseEnter = () => {
+        setIsHovered(true)
+    }
+
+    const handleMouseLeave = () => {
+        setIsHovered(false)
+    }
+
+    // Auto-slide effect (pauses when hovered)
     useEffect(() => {
-        if (!isAutoScrolling) return
+        if (!isAutoScrolling || isHovered) return
 
         const interval = setInterval(() => {
             nextSlide()
         }, autoScrollInterval)
 
         return () => clearInterval(interval)
-    }, [currentIndex, isAutoScrolling, autoScrollInterval])
+    }, [currentIndex, isAutoScrolling, isHovered, autoScrollInterval])
 
     return {
         currentIndex,
         nextSlide,
         prevSlide,
-        goToSlide
+        goToSlide,
+        handleMouseEnter,
+        handleMouseLeave
     }
 }

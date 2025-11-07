@@ -13,6 +13,26 @@ const getAllProducts = async (req, res) => {
     }
 }
 
+const getProductById = async (req, res) => {
+    try {
+        const productId = req.params.id
+        const product = await Product.findById(productId)
+        if (!product) {
+            return res.status(404).json({
+                success: false,
+                message: 'Product not found'
+            })
+        } else {
+            res.json(product)
+        }
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: error.message
+        })
+    }
+}
+
 const getFeaturedProducts = async (req, res) => {
     try {
         //get products which is featured
@@ -114,6 +134,7 @@ const deleteProduct = async (req, res) => {
 
 module.exports = {
     getAllProducts,
+    getProductById,
     getFeaturedProducts,
     getTrendingProducts,
     getProductsByCategory,

@@ -11,7 +11,7 @@ const adminAuth = async (req, res, next) => {
             })
         }
         //If token found -> decoded token
-        const decoded = jwt.verify(token, process.env.JWT_SECRET)
+        const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET)
 
         //After decoded -> find user of token
         const user = await User.findById(decoded.userId)

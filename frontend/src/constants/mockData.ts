@@ -3,72 +3,51 @@ import { Category } from '@/types/product'
 export const categories: Category[] = [
     {
         id: 1,
-        name: 'Phones and Tablets',
-        image: 'phones-tablets.jpg',
-        description: 'Latest smartphones and tablets',
-        bgColor: 'from-blue-500 to-blue-600'
+        name: 'Fruits & Vegetables',
+        image: 'https://images.unsplash.com/photo-1610348725531-843dff563e2c?w=500&q=80',
+        description: 'Fresh organic produce',
+        bgColor: 'from-emerald-50 to-emerald-100'
     },
     {
         id: 2,
-        name: 'Video Games',
-        image: 'video-games.jpg',
-        description: 'Gaming consoles and accessories',
-        bgColor: 'from-purple-500 to-purple-600'
+        name: 'Dairy & Eggs',
+        image: 'https://images.unsplash.com/photo-1628088062854-d1870b4553da?w=500&q=80',
+        description: 'Farm-fresh dairy products',
+        bgColor: 'from-emerald-50 to-emerald-100'
     },
     {
         id: 3,
-        name: 'Electronics',
-        image: 'electronics.jpg',
-        description: 'Latest tech and gadgets',
-        bgColor: 'from-green-500 to-green-600'
+        name: 'Meat & Seafood',
+        image: 'https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?w=500&q=80',
+        description: 'Quality meats and fresh seafood',
+        bgColor: 'from-emerald-50 to-emerald-100'
     },
     {
         id: 4,
-        name: 'Cameras',
-        image: 'cameras.jpg',
-        description: 'Professional photography gear',
-        bgColor: 'from-red-500 to-red-600'
+        name: 'Bakery',
+        image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=500&q=80',
+        description: 'Fresh baked breads and pastries',
+        bgColor: 'from-emerald-50 to-emerald-100'
     },
     {
         id: 5,
-        name: 'Accessories',
-        image: 'accessories.jpg',
-        description: 'Enhance your devices',
-        bgColor: 'from-yellow-500 to-yellow-600'
+        name: 'Beverages',
+        image: 'https://images.unsplash.com/photo-1534353436294-0dbd4bdac845?w=500&q=80',
+        description: 'Drinks, juices, and refreshments',
+        bgColor: 'from-emerald-50 to-emerald-100'
     },
     {
         id: 6,
-        name: 'Smart Home',
-        image: 'smart-home.jpg',
-        description: 'Automation and IoT devices',
-        bgColor: 'from-teal-500 to-teal-600'
+        name: 'Snacks & Candy',
+        image: 'https://images.unsplash.com/photo-1599490659213-e2b9527bd087?w=500&q=80',
+        description: 'Chips, cookies, and sweet treats',
+        bgColor: 'from-emerald-50 to-emerald-100'
     },
     {
         id: 7,
-        name: 'Wearables',
-        image: 'wearables.jpg',
-        description: 'Smartwatches and fitness trackers',
-        bgColor: 'from-pink-500 to-pink-600'
-    },
-    {
-        id: 8,
-        name: 'Audio',
-        image: 'audio.jpg',
-        description: 'Headphones, speakers, and sound systems',
-        bgColor: 'from-indigo-500 to-indigo-600'
-    },
-    {
-        id: 9,
-        name: 'Laptops',
-        image: 'laptops.jpg',
-        description: 'Powerful laptops and ultrabooks',
-        bgColor: 'from-cyan-500 to-cyan-600'
-    },
-    {
-        id: 10,
-        name: 'Drones',
-        image: 'drones.jpg',
-        description: 'Aerial photography and drones',
-        bgColor: 'from-orange-500 to-orange-600'
+        name: 'Pantry Staples',
+        image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=500&q=80',
+        description: 'Pasta, rice, canned goods, spices',
+        bgColor: 'from-emerald-50 to-emerald-100'
     }
 ]

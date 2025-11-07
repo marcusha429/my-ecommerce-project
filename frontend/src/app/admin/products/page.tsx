@@ -65,7 +65,7 @@ export default function ProductPage() {
 
                 <Link
                     href='/admin/products/add'
-                    className='bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2'
+                    className='bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 transition-colors flex items-center gap-2'
                 >
                     <HiPlus className='w-5 h-5' />
                     Add Product
@@ -142,7 +142,7 @@ export default function ProductPage() {
                                         <div className='flex gap-2'>
                                             <Link
                                                 href={`/admin/products/edit/${product._id}`}
-                                                className='text-blue-600 hover:text-blue-800'
+                                                className='text-emerald-600 hover:text-blue-800'
                                             >
                                                 <HiPencil className='w-5 h-5' />
                                             </Link>

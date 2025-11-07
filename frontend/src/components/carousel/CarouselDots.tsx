@@ -12,7 +12,7 @@ export default function CarouselDots({ total, current, onDotClick }: CarouselDot
                     key={index}
                     onClick={() => onDotClick(index)}
                     className={`transition-all ${index === current
-                            ? 'w-8 h-3 bg-blue-600'
+                            ? 'w-8 h-3 bg-emerald-600'
                             : 'w-3 h-3 bg-gray-300 hover:bg-gray-400'
                         } rounded-full`}
                 />

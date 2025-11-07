@@ -61,7 +61,7 @@ export default function AdminDashboard() {
                 {/* Action Buttons Grids - 1 col on mobile, 3 on desktop*/}
                 <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
                     {/* Add Product Button */}
-                    <button onClick={() => window.location.href = '/admin/products/add'} className='bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors'>Add New Product</button>
+                    <button onClick={() => window.location.href = '/admin/products/add'} className='bg-emerald-600 text-white px-6 py-3 rounded-lg hover:bg-emerald-700 transition-colors'>Add New Product</button>
                     {/* View Order Button*/}
                     <button className='bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors'>View All Orders</button>
                     {/* Manage Users Button */}
