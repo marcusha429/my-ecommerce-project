@@ -70,11 +70,16 @@ export const authService = {
             const response = await api.post('/api/auth/signin', data)
             console.log('Signin reponse', response.data)
 
-            //If login successful, store access token in cookie
+            //If login successful, store access token and user data in cookie
             if (response.data.success && response.data.accessToken) {
-                //Don't save local
                 localStorage.setItem('accessToken', response.data.accessToken)
                 console.log('Access token stored in localStorage')
+
+                //Store user data
+                if (response.data.user) {
+                    localStorage.setItem('userData', JSON.stringify(response.data.user))
+                    console.log('User data stored in localStorage')
+                }
 
                 //Note: Refresh token is auto stored as http-only cookie by backend
             }
@@ -99,9 +104,11 @@ export const authService = {
         try {
             const response = await api.post('/api/auth/logout')
             localStorage.removeItem('accessToken')
+            localStorage.removeItem('userData')
             return response.data
         } catch (error: any) {
             localStorage.removeItem('accessToken')
+            localStorage.removeItem('userData')
             return {
                 success: true,
                 message: 'Logged out'

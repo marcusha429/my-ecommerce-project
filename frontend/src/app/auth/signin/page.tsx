@@ -1,6 +1,6 @@
 'use client' //tell Nextjs this run in browser
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { authService, SigninData } from '@/lib/auth'
 
@@ -11,6 +11,13 @@ export default function SigninPage() {
     const [errors, setErrors] = useState<{ [key: string]: string }>({})
 
     const router = useRouter()
+
+    useEffect(() => {
+        const token = localStorage.getItem('accessToken')
+        if (token) {
+            router.replace('/dashboard')
+        }
+    }, [router])
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault() //prevent page refresh
@@ -28,9 +35,8 @@ export default function SigninPage() {
 
             if (response.success) {
                 setErrors({ success: 'Login successful! Redirecting...' })
-                const redirectPath = response.user?.role === 'admin' ? '/admin' : '/dashboard'
                 setTimeout(() => {
-                    router.push(redirectPath)
+                    router.push('/dashboard')
                 }, 1000)
             } else {
                 if (response.errors) {

@@ -14,14 +14,13 @@ export default function CategoryPage() {
     const [products, setProducts] = useState<Product[]>([])
     const [isLoading, setIsLoading] = useState(true)
 
-    //Find categories name
-    const category = categories.find(cat => cat.name.toLowerCase().replace(/\s+/g, '-') === categorySlug)
+    // Find category by category value
+    const category = categories.find(cat => cat.category === categorySlug)
     const categoryName = category?.name || 'Category'
 
     useEffect(() => {
         const fetchCategoryProducts = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/api/products/category/${categorySlug}`)
                 const data = await api.get(`/api/products/category/${categorySlug}`)
                 setProducts(data)
             } catch (error) {

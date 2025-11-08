@@ -7,19 +7,24 @@ export default function ShopLayout({ children }: { children: React.ReactNode }) 
     const [isLoggedIn, setIsLoggedIn] = useState(false)
     const [userName, setUserName] = useState('')
     const [userEmail, setUserEmail] = useState('')
+    const [userRole, setUserRole] = useState('')
     const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
         const checkAuth = async () => {
             const token = localStorage.getItem('accessToken')
-            if (token) {
+            const userData = localStorage.getItem('userData')
+            if (token && userData) {
+                const user = JSON.parse(userData)
                 setIsLoggedIn(true)
-                setUserName('John Doe')
-                setUserEmail('john@example.com')
+                setUserName(user.name || 'User')
+                setUserEmail(user.email || '')
+                setUserRole(user.role || 'customer')
             } else {
                 setIsLoggedIn(false)
                 setUserName('')
                 setUserEmail('')
+                setUserRole('')
             }
             setIsLoading(false)
         }
@@ -32,7 +37,7 @@ export default function ShopLayout({ children }: { children: React.ReactNode }) 
 
     return (
         <div className='min-h-screen bg-gray-50'>
-            <Header isLoggedIn={isLoggedIn} userName={userName} userEmail={userEmail} />
+            <Header isLoggedIn={isLoggedIn} userName={userName} userEmail={userEmail} userRole={userRole} />
             {children}
         </div>
     )

@@ -1,7 +1,7 @@
 export const gradients = [
-  'from-slate-900 to-slate-700 text-white',
-  'from-gray-100 to-gray-200 text-black',
-  'from-purple-600 to-pink-600 text-white'
+  'from-emerald-600 to-emerald-800 text-white',    // Dark green
+  'from-emerald-50 to-emerald-100 text-emerald-900', // Light green
+  'from-teal-500 to-emerald-600 text-white'         // Teal to green
 ]
 
 export const primaryBtn = [

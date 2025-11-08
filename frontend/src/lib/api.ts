@@ -9,7 +9,6 @@ const getAuthToken = (): string | null => {
     }
     return null
 }
-
 //API helper object with all HTTP methods
 export const api = {
     /**

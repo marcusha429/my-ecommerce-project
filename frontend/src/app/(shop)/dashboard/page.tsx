@@ -17,11 +17,14 @@ export default function DashboardPage() {
 
     return (
         <main>
-            {/* New Arrivals Section */}
+            {/* Fresh Picks Section */}
             <section className="mb-12">
-                <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">
-                    New Arrivals
-                </h2>
+                <div className="text-center mb-8">
+                    <h2 className="text-3xl font-bold text-gray-800 mb-2">
+                        Fresh Picks 🌱
+                    </h2>
+                    <p className="text-gray-600">Seasonal produce picked fresh daily</p>
+                </div>
                 {featuredProducts.slice(0, 3).map((product, index) => (
                     <ProductCard
                         key={product._id}
@@ -32,12 +35,15 @@ export default function DashboardPage() {
                 ))}
             </section>
 
-            {/* Trending Section */}
+            {/* Popular Items Section */}
             <section className="mb-12">
-                <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">
-                    Trending Now
-                </h2>
-                <div className="mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="text-center mb-8">
+                    <h2 className="text-3xl font-bold text-gray-800 mb-2">
+                        Popular Items ⭐
+                    </h2>
+                    <p className="text-gray-600">Customer favorites and best sellers</p>
+                </div>
+                <div className="mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 max-w-7xl px-4">
                     {trendingProducts.slice(0, 6).map((product, index) => (
                         <ProductCard
                             key={product._id}

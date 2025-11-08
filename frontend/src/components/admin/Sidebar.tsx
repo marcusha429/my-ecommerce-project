@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { HiViewGrid, HiShoppingBag, HiShoppingCart, HiUsers, HiLogout } from 'react-icons/hi'
+import { HiViewGrid, HiShoppingBag, HiShoppingCart, HiUsers, HiLogout, HiArrowLeft } from 'react-icons/hi'
 import { authService } from '@/lib/auth'
 
 export default function Sidebar() {
@@ -47,11 +47,23 @@ export default function Sidebar() {
                     )
                 })}
             </nav>
-            {/* Logout Button */}
+
+            {/* Back to Dashboard Button */}
             <div className='p-6 border-t border-gray-700'>
+                <Link
+                    href='/dashboard'
+                    className='flex items-center gap-3 px-6 py-3 w-full hover:bg-emerald-700 bg-emerald-600 rounded-lg transition-colors text-white'
+                >
+                    <HiArrowLeft className='w-5 h-5' />
+                    <span>Back to Dashboard</span>
+                </Link>
+            </div>
+
+            {/* Logout Button */}
+            <div className='px-6 pb-6'>
                 <button
                     onClick={handleLogout}
-                    className='flex items-center gap-3 px-6 py-3 w-full hover:bg-gray-800 rounded-lg transition-colors'>
+                    className='flex items-center gap-3 px-6 py-3 w-full hover:bg-red-700 bg-red-600 rounded-lg transition-colors'>
                     <HiLogout className='w-5 h-5' />
                     <span>Logout</span>
                 </button>

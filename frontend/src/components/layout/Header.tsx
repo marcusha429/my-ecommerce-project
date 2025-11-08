@@ -6,22 +6,26 @@
 
 'use client'
 
+import Link from 'next/link'
 import { authService } from '@/lib/auth'
 import Logo from '@/components/header/Logo'
 import SearchBar from '@/components/header/SearchBar'
 import AccountDropDown from '@/components/header/Account'
 import Explore from '@/components/header/Explore'
+import { HiLockClosed } from 'react-icons/hi'
 
 interface HeaderProps {
     userName?: string
     userEmail?: string
     isLoggedIn?: boolean
+    userRole?: string
 }
 
 export default function Header({
     userName = 'John Doe',
     userEmail = 'john@example.com',
-    isLoggedIn = false //default 
+    isLoggedIn = false, //default
+    userRole = 'customer'
 }: HeaderProps) {
 
     const handleSearch = (query: string) => {
@@ -56,7 +60,18 @@ export default function Header({
                     {/* 3. Search Bar */}
                     <SearchBar onSearch={handleSearch} />
 
-                    {/* 4. Account Dropdown */}
+                    {/* 4. Admin Portal Link (only for admins) */}
+                    {isLoggedIn && userRole === 'admin' && (
+                        <Link
+                            href='/admin'
+                            className='flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors'
+                        >
+                            <HiLockClosed className='w-4 h-4' />
+                            <span className='font-medium'>Admin Portal</span>
+                        </Link>
+                    )}
+
+                    {/* 5. Account Dropdown */}
                     <AccountDropDown
                         isLoggedIn={isLoggedIn}
                         userName={userName}
