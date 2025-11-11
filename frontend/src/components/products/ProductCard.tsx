@@ -3,24 +3,24 @@ import { gradients, primaryBtn, secondaryBtn } from '@/constants/style'
 
 interface ProductCardProps {
     product: Product
-    variant?: 'featured' | 'trending'
+    variant?: 'toppick' | 'popular'
     index?: number
 }
 
 export default function ProductCard({
     product,
-    variant = 'trending',
+    variant = 'popular',
     index = 0
 }: ProductCardProps) {
 
-    if (variant === 'featured') {
+    if (variant === 'toppick') {
         return (
             <div className={`bg-gradient-to-r ${gradients[index % gradients.length]} rounded-3xl p-8 md:p-12 mb-6 overflow-hidden relative`}>
                 <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-8">
                     <div className="md:w-1/2 mb-6 md:mb-0">
                         {/* Organic Badge */}
                         {product.organic && (
-                            <span className="inline-block bg-white bg-opacity-20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                            <span className="inline-block bg-gray-800 text-white bg-opacity-20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-semibold mb-4">
                                 🌱 Organic
                             </span>
                         )}
@@ -71,7 +71,7 @@ export default function ProductCard({
         )
     }
 
-    // Trending variant
+    // Popular variant
     return (
         <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-emerald-200">
             <div className="flex flex-col md:flex-row items-center p-6 gap-6">

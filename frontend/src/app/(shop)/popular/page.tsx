@@ -3,8 +3,8 @@
 import ProductGrid from '@/components/products/ProductGrid'
 import { useProducts } from '@/hooks/useProduct'
 
-export default function ArrivalsPage() {
-    const { featuredProducts, isLoading } = useProducts()
+export default function TrendingPage() {
+    const { popularProducts, isLoading } = useProducts()
 
     if (isLoading) {
         return (
@@ -16,9 +16,9 @@ export default function ArrivalsPage() {
 
     return (
         <ProductGrid
-            products={featuredProducts}
-            title="New Arrivals"
-            emptyMessage="No new arrivals at the moment"
+            products={popularProducts}
+            title="Popular Items"
+            emptyMessage="No Popular products at the moment"
         />
     )
 }

@@ -3,22 +3,22 @@ import { Product } from '@/types/product'
 import { api } from '@/lib/api'
 
 export function useProducts() {
-    const [featuredProducts, setFeaturedProducts] = useState<Product[]>([])
-    const [trendingProducts, setTrendingProducts] = useState<Product[]>([])
+    const [toppickProducts, setToppickProducts] = useState<Product[]>([])
+    const [popularProducts, setPopularProducts] = useState<Product[]>([])
     const [isLoading, setIsLoading] = useState(true)
     const [error, setError] = useState<string>('')
 
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                // Fetch featured products
-                const featuredData = await api.get('/api/products/featured')
-                setFeaturedProducts(featuredData)
+                // Fetch toppick products
+                const toppickData = await api.get('/api/products/toppick')
+                setToppickProducts(toppickData)
 
-                // Fetch trending products
-                const trendingData = await api.get('/api/products/trending')
-                const trendingOnly = trendingData.filter((product: Product) => !product.featured)
-                setTrendingProducts(trendingOnly)
+                // Fetch popular products
+                const popularData = await api.get('/api/products/popular')
+                const popularOnly = popularData.filter((product: Product) => !product.toppick)
+                setPopularProducts(popularOnly)
 
                 setIsLoading(false)
             } catch (err) {
@@ -32,8 +32,8 @@ export function useProducts() {
     }, [])
 
     return {
-        featuredProducts,
-        trendingProducts,
+        toppickProducts,
+        popularProducts,
         isLoading,
         error
     }

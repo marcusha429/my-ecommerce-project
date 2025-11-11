@@ -25,11 +25,11 @@ const productSchema = new mongoose.Schema(
             required: true,
             enum: ['fruits-vegetables', 'dairy-eggs', 'meat-seafood', 'bakery', 'beverages', 'snacks', 'pantry']
         },
-        featured: {
+        toppick: {
             type: Boolean,
             default: false
         },
-        trending: {
+        popular: {
             type: Boolean,
             default: false
         },

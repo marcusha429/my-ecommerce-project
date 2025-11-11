@@ -10,7 +10,7 @@ import { useCarousel } from '@/hooks/useCarousel'
 import { categories } from '@/constants/mockData'
 
 export default function DashboardPage() {
-    const { featuredProducts, trendingProducts } = useProducts()
+    const { toppickProducts, popularProducts } = useProducts()
     const { currentIndex, nextSlide, prevSlide, goToSlide, handleMouseEnter, handleMouseLeave } = useCarousel({
         itemCount: categories.length
     })
@@ -25,11 +25,11 @@ export default function DashboardPage() {
                     </h2>
                     <p className="text-gray-600">Seasonal produce picked fresh daily</p>
                 </div>
-                {featuredProducts.slice(0, 3).map((product, index) => (
+                {toppickProducts.slice(0, 3).map((product, index) => (
                     <ProductCard
                         key={product._id}
                         product={product}
-                        variant="featured"
+                        variant="toppick"
                         index={index}
                     />
                 ))}
@@ -44,11 +44,11 @@ export default function DashboardPage() {
                     <p className="text-gray-600">Customer favorites and best sellers</p>
                 </div>
                 <div className="mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 max-w-7xl px-4">
-                    {trendingProducts.slice(0, 6).map((product, index) => (
+                    {popularProducts.slice(0, 6).map((product, index) => (
                         <ProductCard
                             key={product._id}
                             product={product}
-                            variant="trending"
+                            variant="popular"
                             index={index}
                         />
                     ))}

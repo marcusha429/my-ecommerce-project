@@ -3,7 +3,7 @@ const Product = require('./models/Product')
 require('dotenv').config()
 
 const groceryProducts = [
-    // FRESH PICKS (Featured)
+    // FRESH PICKS (Top Pick)
     {
         name: 'Organic Bananas',
         description: 'Fresh organic bananas from local farms, perfectly ripe and sweet',
@@ -12,8 +12,8 @@ const groceryProducts = [
         brand: 'Farm Fresh',
         stock: 150,
         images: ['https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=500'],
-        featured: true,
-        trending: false,
+        toppick: true,
+        popular: false,
         unit: 'lb',
         organic: true,
         nutrition: {
@@ -32,8 +32,8 @@ const groceryProducts = [
         brand: 'California Fresh',
         stock: 200,
         images: ['https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?w=500'],
-        featured: true,
-        trending: true,
+        toppick: true,
+        popular: true,
         unit: 'piece',
         organic: true,
         nutrition: {
@@ -52,8 +52,8 @@ const groceryProducts = [
         brand: 'Berry Best',
         stock: 80,
         images: ['https://images.unsplash.com/photo-1464965911861-746a04b4bca6?w=500'],
-        featured: true,
-        trending: true,
+        toppick: true,
+        popular: true,
         unit: 'lb',
         organic: true,
         nutrition: {
@@ -74,8 +74,8 @@ const groceryProducts = [
         brand: 'Organic Valley',
         stock: 45,
         images: ['https://images.unsplash.com/photo-1550583724-b2692b85b150?w=500'],
-        featured: false,
-        trending: true,
+        toppick: false,
+        popular: true,
         unit: 'gallon',
         organic: true,
         nutrition: {
@@ -94,8 +94,8 @@ const groceryProducts = [
         brand: "Butcher's Choice",
         stock: 30,
         images: ['https://images.unsplash.com/photo-1604503468506-a8da13d82791?w=500'],
-        featured: false,
-        trending: true,
+        toppick: false,
+        popular: true,
         unit: 'lb',
         organic: false,
         nutrition: {
@@ -114,8 +114,8 @@ const groceryProducts = [
         brand: 'Daily Bread',
         stock: 25,
         images: ['https://images.unsplash.com/photo-1549931319-a545dcf3bc73?w=500'],
-        featured: false,
-        trending: true,
+        toppick: false,
+        popular: true,
         unit: 'piece',
         organic: true,
         nutrition: {
@@ -134,8 +134,8 @@ const groceryProducts = [
         brand: 'Happy Hens',
         stock: 60,
         images: ['https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=500'],
-        featured: false,
-        trending: true,
+        toppick: false,
+        popular: true,
         unit: 'dozen',
         organic: true,
         nutrition: {
@@ -154,8 +154,8 @@ const groceryProducts = [
         brand: 'Ocean Harvest',
         stock: 20,
         images: ['https://images.unsplash.com/photo-1574781330855-d0db8cc6a79c?w=500'],
-        featured: false,
-        trending: true,
+        toppick: false,
+        popular: true,
         unit: 'lb',
         organic: false,
         nutrition: {
@@ -174,8 +174,8 @@ const groceryProducts = [
         brand: 'Green Leaf',
         stock: 100,
         images: ['https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=500'],
-        featured: false,
-        trending: true,
+        toppick: false,
+        popular: true,
         unit: 'lb',
         organic: true,
         nutrition: {
@@ -196,8 +196,8 @@ const groceryProducts = [
         brand: 'Farm Fresh',
         stock: 120,
         images: ['https://images.unsplash.com/photo-1546094096-0df4bcaaa337?w=500'],
-        featured: false,
-        trending: false,
+        toppick: false,
+        popular: false,
         unit: 'lb',
         organic: false,
         nutrition: {
@@ -216,8 +216,8 @@ const groceryProducts = [
         brand: 'Garden Fresh',
         stock: 85,
         images: ['https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?w=500'],
-        featured: false,
-        trending: false,
+        toppick: false,
+        popular: false,
         unit: 'piece',
         organic: true,
         nutrition: {
@@ -238,8 +238,8 @@ const groceryProducts = [
         brand: 'Chobani',
         stock: 70,
         images: ['https://images.unsplash.com/photo-1488477181946-6428a0291777?w=500'],
-        featured: false,
-        trending: false,
+        toppick: false,
+        popular: false,
         unit: 'lb',
         organic: true,
         nutrition: {
@@ -258,8 +258,8 @@ const groceryProducts = [
         brand: 'Tillamook',
         stock: 50,
         images: ['https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?w=500'],
-        featured: false,
-        trending: false,
+        toppick: false,
+        popular: false,
         unit: 'lb',
         organic: false,
         nutrition: {
@@ -280,8 +280,8 @@ const groceryProducts = [
         brand: "Butcher's Choice",
         stock: 40,
         images: ['https://images.unsplash.com/photo-1603048588665-791ca8aea617?w=500'],
-        featured: false,
-        trending: false,
+        toppick: false,
+        popular: false,
         unit: 'lb',
         organic: false,
         nutrition: {
@@ -300,8 +300,8 @@ const groceryProducts = [
         brand: 'Ocean Harvest',
         stock: 35,
         images: ['https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?w=500'],
-        featured: false,
-        trending: false,
+        toppick: false,
+        popular: false,
         unit: 'lb',
         organic: false,
         nutrition: {
@@ -322,8 +322,8 @@ const groceryProducts = [
         brand: 'La Boulangerie',
         stock: 40,
         images: ['https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=500'],
-        featured: false,
-        trending: false,
+        toppick: false,
+        popular: false,
         unit: 'dozen',
         organic: false,
         nutrition: {
@@ -342,8 +342,8 @@ const groceryProducts = [
         brand: 'Daily Bread',
         stock: 35,
         images: ['https://images.unsplash.com/photo-1607920591413-4ec007e70023?w=500'],
-        featured: false,
-        trending: false,
+        toppick: false,
+        popular: false,
         unit: 'dozen',
         organic: true,
         nutrition: {
@@ -362,8 +362,8 @@ const groceryProducts = [
         brand: 'New York Bagel',
         stock: 50,
         images: ['https://images.unsplash.com/photo-1551106652-a5bcf4b29ab6?w=500'],
-        featured: false,
-        trending: false,
+        toppick: false,
+        popular: false,
         unit: 'dozen',
         organic: false,
         nutrition: {
@@ -384,8 +384,8 @@ const groceryProducts = [
         brand: 'Tropicana',
         stock: 60,
         images: ['https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=500'],
-        featured: false,
-        trending: false,
+        toppick: false,
+        popular: false,
         unit: 'gallon',
         organic: false,
         nutrition: {
@@ -404,8 +404,8 @@ const groceryProducts = [
         brand: 'La Croix',
         stock: 100,
         images: ['https://images.unsplash.com/photo-1523362628745-0c100150b504?w=500'],
-        featured: false,
-        trending: false,
+        toppick: false,
+        popular: false,
         unit: 'liter',
         organic: false,
         nutrition: {
@@ -424,8 +424,8 @@ const groceryProducts = [
         brand: 'Stumptown',
         stock: 45,
         images: ['https://images.unsplash.com/photo-1517487881594-2787fef5ebf7?w=500'],
-        featured: false,
-        trending: false,
+        toppick: false,
+        popular: false,
         unit: 'gallon',
         organic: true,
         nutrition: {
@@ -444,8 +444,8 @@ const groceryProducts = [
         brand: 'Tazo',
         stock: 80,
         images: ['https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=500'],
-        featured: false,
-        trending: false,
+        toppick: false,
+        popular: false,
         unit: 'oz',
         organic: true,
         nutrition: {
@@ -466,8 +466,8 @@ const groceryProducts = [
         brand: 'Blue Diamond',
         stock: 70,
         images: ['https://images.unsplash.com/photo-1599599810769-bcde5a160d32?w=500'],
-        featured: false,
-        trending: false,
+        toppick: false,
+        popular: false,
         unit: 'lb',
         organic: false,
         nutrition: {
@@ -486,8 +486,8 @@ const groceryProducts = [
         brand: 'Late July',
         stock: 90,
         images: ['https://images.unsplash.com/photo-1613919113640-25732ec5e61f?w=500'],
-        featured: false,
-        trending: false,
+        toppick: false,
+        popular: false,
         unit: 'oz',
         organic: true,
         nutrition: {
@@ -506,8 +506,8 @@ const groceryProducts = [
         brand: 'Lindt',
         stock: 60,
         images: ['https://images.unsplash.com/photo-1599599810769-bcde5a160d32?w=500'],
-        featured: false,
-        trending: false,
+        toppick: false,
+        popular: false,
         unit: 'piece',
         organic: false,
         nutrition: {
@@ -526,8 +526,8 @@ const groceryProducts = [
         brand: 'Nature Valley',
         stock: 100,
         images: ['https://images.unsplash.com/photo-1606312619070-d48b4cdd6d2f?w=500'],
-        featured: false,
-        trending: false,
+        toppick: false,
+        popular: false,
         unit: 'oz',
         organic: true,
         nutrition: {
@@ -548,8 +548,8 @@ const groceryProducts = [
         brand: 'Barilla',
         stock: 120,
         images: ['https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=500'],
-        featured: false,
-        trending: false,
+        toppick: false,
+        popular: false,
         unit: 'lb',
         organic: true,
         nutrition: {
@@ -568,8 +568,8 @@ const groceryProducts = [
         brand: 'Colavita',
         stock: 50,
         images: ['https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=500'],
-        featured: false,
-        trending: false,
+        toppick: false,
+        popular: false,
         unit: 'gallon',
         organic: false,
         nutrition: {
@@ -588,8 +588,8 @@ const groceryProducts = [
         brand: 'Lundberg',
         stock: 80,
         images: ['https://images.unsplash.com/photo-1586201375761-83865001e31c?w=500'],
-        featured: false,
-        trending: false,
+        toppick: false,
+        popular: false,
         unit: 'lb',
         organic: true,
         nutrition: {
@@ -608,8 +608,8 @@ const groceryProducts = [
         brand: "Rao's",
         stock: 70,
         images: ['https://images.unsplash.com/photo-1627650044575-3371c3d46b79?w=500'],
-        featured: false,
-        trending: false,
+        toppick: false,
+        popular: false,
         unit: 'gallon',
         organic: true,
         nutrition: {

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Header from '@/components/layout/Header'
+import FloatingAIButton from '@/components/ai/FloatingAIButton'
 
 export default function ShopLayout({ children }: { children: React.ReactNode }) {
     const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -39,6 +40,9 @@ export default function ShopLayout({ children }: { children: React.ReactNode }) 
         <div className='min-h-screen bg-gray-50'>
             <Header isLoggedIn={isLoggedIn} userName={userName} userEmail={userEmail} userRole={userRole} />
             {children}
+
+            {/* Floating AI Assistant */}
+            <FloatingAIButton />
         </div>
     )
 }

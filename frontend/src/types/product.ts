@@ -5,8 +5,8 @@ export interface Product {
     price: number
     images: string[]
     category: string
-    featured: boolean
-    trending: boolean
+    toppick: boolean
+    popular: boolean
     stock: number
     brand: string
     createdAt: string

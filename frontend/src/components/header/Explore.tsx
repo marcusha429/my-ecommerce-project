@@ -33,17 +33,17 @@ export default function Explore() {
             {isOpen && (
                 <div className='absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-lg boder z-50'>
                     {/* New Arrivals */}
-                    <button onClick={() => handleNavigation('/arrivals')}
+                    <button onClick={() => handleNavigation('/toppick')}
                         className='w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b'>
                         <div className='font-medium'>
-                            New Arrivals
+                            Top Picked
                         </div>
                     </button>
                     {/* Trending */}
-                    <button onClick={() => handleNavigation('/trending')}
+                    <button onClick={() => handleNavigation('/popular')}
                         className='w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b'>
                         <div className='font-medium'>
-                            Trending
+                            Popular Products
                         </div>
                     </button>
                     {/* Shop by Categories */}

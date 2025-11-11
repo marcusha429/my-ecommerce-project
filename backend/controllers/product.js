@@ -33,10 +33,10 @@ const getProductById = async (req, res) => {
     }
 }
 
-const getFeaturedProducts = async (req, res) => {
+const getToppickProducts = async (req, res) => {
     try {
-        //get products which is featured
-        const products = await Product.find({ featured: true })
+        //get products which is toppick
+        const products = await Product.find({ toppick: true })
         res.json(products)
     } catch (error) {
         res.status(500).json({
@@ -45,10 +45,10 @@ const getFeaturedProducts = async (req, res) => {
     }
 }
 
-const getTrendingProducts = async (req, res) => {
+const getPopularProducts = async (req, res) => {
     try {
-        //get products which is trending
-        const products = await Product.find({ trending: true })
+        //get products which is popular
+        const products = await Product.find({ popular: true })
         res.json(products)
     } catch (error) {
         res.status(500).json({
@@ -135,8 +135,8 @@ const deleteProduct = async (req, res) => {
 module.exports = {
     getAllProducts,
     getProductById,
-    getFeaturedProducts,
-    getTrendingProducts,
+    getToppickProducts,
+    getPopularProducts,
     getProductsByCategory,
     createProduct,
     updateProduct,
