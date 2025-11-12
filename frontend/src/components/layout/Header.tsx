@@ -12,7 +12,7 @@ import Logo from '@/components/header/Logo'
 import SearchBar from '@/components/header/SearchBar'
 import AccountDropDown from '@/components/header/Account'
 import Explore from '@/components/header/Explore'
-import { HiLockClosed } from 'react-icons/hi'
+import { HiLockClosed, HiShoppingCart } from 'react-icons/hi'
 
 interface HeaderProps {
     userName?: string
@@ -60,7 +60,20 @@ export default function Header({
                     {/* 3. Search Bar */}
                     <SearchBar onSearch={handleSearch} />
 
-                    {/* 4. Admin Portal Link (only for admins) */}
+                    {/* 4. Shopping Cart Icon */}
+                    <Link
+                        href='/cart'
+                        className='relative p-2 hover:bg-gray-100 rounded-lg transition-colors group'
+                        title='Shopping Cart'
+                    >
+                        <HiShoppingCart className='w-6 h-6 text-gray-700 group-hover:text-emerald-600 transition-colors' />
+                        {/* Cart badge - shows item count */}
+                        <span className='absolute -top-1 -right-1 bg-emerald-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center'>
+                            3
+                        </span>
+                    </Link>
+
+                    {/* 5. Admin Portal Link (only for admins) */}
                     {isLoggedIn && userRole === 'admin' && (
                         <Link
                             href='/admin'
@@ -71,7 +84,7 @@ export default function Header({
                         </Link>
                     )}
 
-                    {/* 5. Account Dropdown */}
+                    {/* 6. Account Dropdown */}
                     <AccountDropDown
                         isLoggedIn={isLoggedIn}
                         userName={userName}

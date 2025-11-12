@@ -32,6 +32,10 @@ app.use('/api/auth', authRoutes)
 const productRoutes = require('./routes/product')
 app.use('/api/products', productRoutes)
 
+/* AI Route */
+const aiRoutes = require('./routes/ai')
+app.use('/api/ai', aiRoutes)
+
 //port
 const PORT = process.env.PORT || 5000
 

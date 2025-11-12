@@ -26,6 +26,31 @@ const userSchema = new mongoose.Schema(
             type: String,
             enum: ['customer', 'admin'],
             default: 'customer'
+        },
+        //AI Chat History
+        chatHistory: [
+            {
+                role: {
+                    type: String,
+                    enum: ['user', 'assistant'],
+                    required: true
+                },
+                content: {
+                    type: String,
+                    required: true
+                },
+                timestamp: {
+                    type: Date,
+                    default: Date.now
+                }
+            }
+        ],
+        //Health Preference
+        healthProfile: {
+            condition: [String], //['diabetes, 'hypertension']
+            allergies: [String],
+            dietaryPreferences: [String], //['vegetarian', 'low-carb']
+            goals: [String]
         }
     }
 )

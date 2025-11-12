@@ -6,7 +6,7 @@ import AIChatModal from './AIChatModal'
 export default function FloatingAIButton() {
     const [showChat, setShowChat] = useState(false)
     const [isHovered, setIsHovered] = useState(false)
-    const [hasUnreadMessages, setHasUnreadMessages] = useState(true) // Start with NEW badge
+    const [hasUnreadMessages, setHasUnreadMessages] = useState(false) // No badge until new messages
 
     const handleOpenChat = () => {
         setShowChat(true)

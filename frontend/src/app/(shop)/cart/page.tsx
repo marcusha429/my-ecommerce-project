@@ -225,7 +225,7 @@ export default function CartPage() {
                 {/* AI Recipe Suggestions - Only show if cart has items */}
                 {cartItems.length > 0 && (
                     <div className="mt-12">
-                        <SmartCartRecipes />
+                        <SmartCartRecipes cartItems={cartItems} />
                     </div>
                 )}
             </div>

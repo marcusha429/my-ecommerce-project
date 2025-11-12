@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import RecipeCheckModal from './RecipeCheckModal'
 
 interface MissingItem {
     ingredient: string
@@ -90,29 +91,69 @@ const mockRecipes: Recipe[] = [
     }
 ]
 
-export default function SmartCartRecipes() {
+interface SmartCartRecipesProps {
+    cartItems: any[]
+}
+
+export default function SmartCartRecipes({ cartItems }: SmartCartRecipesProps) {
     const [loading, setLoading] = useState(false)
     const [readyRecipes, setReadyRecipes] = useState<Recipe[]>([])
     const [almostReadyRecipes, setAlmostReadyRecipes] = useState<Recipe[]>([])
     const [expandedRecipe, setExpandedRecipe] = useState<string | null>(null)
+    const [showRecipeModal, setShowRecipeModal] = useState(false)
 
     useEffect(() => {
         //Auto analyze
         analyzeCartRecipes()
     }, [])
 
-    const analyzeCartRecipes = () => {
+    const analyzeCartRecipes = async () => {
         setLoading(true)
-        //AI analyze
-        setTimeout(() => {
-            //categorize recipe
-            const ready = mockRecipes.filter(r => r.missingItems.length === 0)
-            const almost = mockRecipes.filter(r => r.missingItems.length > 0 && r.missingItems.length < 3)
+
+        try {
+            const token = localStorage.getItem('accessToken')
+
+            if (!token) {
+                // If not logged in, use mock data
+                const ready = mockRecipes.filter(r => r.missingItems.length === 0)
+                const almost = mockRecipes.filter(r => r.missingItems.length > 0 && r.missingItems.length < 3)
+                setReadyRecipes(ready)
+                setAlmostReadyRecipes(almost)
+                setLoading(false)
+                return
+            }
+
+            // Call backend API
+            const response = await fetch('http://localhost:5000/api/ai/analyze-cart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+
+            const data = await response.json()
+
+            if (!response.ok) {
+                throw new Error(data.error || 'Failed to analyze cart')
+            }
+
+            // Categorize recipes from API response
+            const ready = data.recipes.filter((r: Recipe) => r.missingItems.length === 0)
+            const almost = data.recipes.filter((r: Recipe) => r.missingItems.length > 0 && r.missingItems.length <= 3)
 
             setReadyRecipes(ready)
             setAlmostReadyRecipes(almost)
+        } catch (error: any) {
+            console.error('Cart Analysis Error:', error)
+            // Fallback to mock data on error
+            const ready = mockRecipes.filter(r => r.missingItems.length === 0)
+            const almost = mockRecipes.filter(r => r.missingItems.length > 0 && r.missingItems.length < 3)
+            setReadyRecipes(ready)
+            setAlmostReadyRecipes(almost)
+        } finally {
             setLoading(false)
-        }, 1500)
+        }
     }
 
     const addMissingItemsToCart = (recipe: Recipe) => {
@@ -160,12 +201,7 @@ export default function SmartCartRecipes() {
                         </div>
                     </div>
                     <button
-                        onClick={() => {
-                            const recipeName = prompt('📝 What recipe are you planning to make?\n\nEnter the recipe name and AI will check if you have all ingredients:')
-                            if (recipeName) {
-                                alert(`🤖 AI is checking your cart for "${recipeName}"...\n\n(This will be connected to real AI in next steps)`)
-                            }
-                        }}
+                        onClick={() => setShowRecipeModal(true)}
                         className="bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white px-6 py-3 rounded-lg font-semibold transition-all border-2 border-white/40 whitespace-nowrap"
                     >
                         📝 Got Your Own Recipe?
@@ -360,6 +396,13 @@ export default function SmartCartRecipes() {
                     <p className="text-gray-600">Add more items to your cart and AI will suggest recipes for you!</p>
                 </div>
             )}
+
+            {/* Recipe Check Modal */}
+            <RecipeCheckModal
+                isOpen={showRecipeModal}
+                onClose={() => setShowRecipeModal(false)}
+                cartItems={cartItems}
+            />
         </div>
     )
 }

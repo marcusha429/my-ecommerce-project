@@ -53,21 +53,49 @@ export default function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
             timestamp: new Date()
         }])
 
-        //Simulate AI thinking
         setLoading(true)
 
-        //Mock API delay 1 2 secs\
-        setTimeout(() => {
-            //Random mock response
-            const randomResponse = mockAIResponses[Math.floor(Math.random() * mockAIResponses.length)]
+        try {
+            // Get access token from localStorage
+            const token = localStorage.getItem('accessToken')
 
+            if (!token) {
+                throw new Error('Please sign in to use AI chat')
+            }
+
+            // Call backend API
+            const response = await fetch('http://localhost:5000/api/ai/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ message: userMessage })
+            })
+
+            const data = await response.json()
+
+            if (!response.ok) {
+                throw new Error(data.error || 'Failed to get AI response')
+            }
+
+            // Add AI response
             setMessages(prev => [...prev, {
                 role: 'assistant',
-                message: randomResponse,
+                message: data.message,
+                timestamp: new Date(data.timestamp)
+            }])
+        } catch (error: any) {
+            console.error('AI Chat Error:', error)
+            // Show error message to user
+            setMessages(prev => [...prev, {
+                role: 'assistant',
+                message: `❌ Error: ${error.message}. Please try again.`,
                 timestamp: new Date()
             }])
+        } finally {
             setLoading(false)
-        }, 1500)
+        }
     }
 
     //Suggest question for quick start
@@ -101,7 +129,7 @@ export default function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
                 {/* Header */}
                 <div className="bg-gradient-to-r from-emerald-500 to-emerald-700 p-4 rounded-t-2xl flex justify-between items-center">
                     <div>
-                        <h2 className="text-xl font-bold text-white">🤖 Grok AI Assistant</h2>
+                        <h2 className="text-xl font-bold text-white">🤖 Gemini AI Assistant</h2>
                         <p className="text-sm text-white/80">Ask me about meals, recipes, and healthy eating</p>
                     </div>
                     <button
@@ -142,7 +170,7 @@ export default function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
                                 {msg.role === 'assistant' && (
                                     <div className="flex items-center gap-2 mb-1">
                                         <span className="text-lg">🤖</span>
-                                        <span className="text-xs font-semibold text-emerald-600">Grok AI</span>
+                                        <span className="text-xs font-semibold text-emerald-600">Gemini AI</span>
                                     </div>
                                 )}
                                 <p className="whitespace-pre-wrap text-sm leading-relaxed">{msg.message}</p>
@@ -158,7 +186,7 @@ export default function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
                             <div className="bg-white border border-gray-200 rounded-2xl p-3 shadow-sm">
                                 <div className="flex items-center gap-2 mb-1">
                                     <span className="text-lg">🤖</span>
-                                    <span className="text-xs font-semibold text-emerald-600">Grok AI</span>
+                                    <span className="text-xs font-semibold text-emerald-600">Gemini AI</span>
                                 </div>
                                 <div className="flex gap-1">
                                     <div className="w-2 h-2 bg-emerald-400 rounded-full animate-bounce"></div>
