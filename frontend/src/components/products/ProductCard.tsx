@@ -1,5 +1,9 @@
+'use client'
+
 import { Product } from '@/types/product'
 import { gradients, primaryBtn, secondaryBtn } from '@/constants/style'
+import * as cartService from '@/services/cartService'
+import { useState } from 'react'
 
 interface ProductCardProps {
     product: Product
@@ -12,6 +16,25 @@ export default function ProductCard({
     variant = 'popular',
     index = 0
 }: ProductCardProps) {
+    const [isAdding, setIsAdding] = useState(false)
+
+    const handleAddToCart = async () => {
+        try {
+            setIsAdding(true)
+            await cartService.addToCart(product._id, 1)
+
+            // Refresh cart count in header
+            if (typeof window !== 'undefined' && (window as any).refreshCartCount) {
+                await (window as any).refreshCartCount()
+            }
+
+            alert(`${product.name} added to cart!`)
+        } catch (error: any) {
+            alert(error.message || 'Failed to add to cart. Please login first.')
+        } finally {
+            setIsAdding(false)
+        }
+    }
 
     if (variant === 'toppick') {
         return (
@@ -44,8 +67,12 @@ export default function ProductCard({
                             <button className={`${primaryBtn[index % primaryBtn.length]} px-8 py-3 rounded-full font-semibold transition-colors`}>
                                 View Details
                             </button>
-                            <button className={`${secondaryBtn[index % secondaryBtn.length]} px-8 py-3 rounded-full font-semibold transition-colors`}>
-                                Add to Cart
+                            <button
+                                onClick={handleAddToCart}
+                                disabled={isAdding || product.stock === 0}
+                                className={`${secondaryBtn[index % secondaryBtn.length]} px-8 py-3 rounded-full font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed`}
+                            >
+                                {isAdding ? 'Adding...' : product.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
                             </button>
                         </div>
                     </div>
@@ -127,8 +154,12 @@ export default function ProductCard({
                         <button className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-full font-semibold transition-colors text-sm md:text-base">
                             View Details
                         </button>
-                        <button className="bg-white text-emerald-600 border-2 border-emerald-600 hover:bg-emerald-50 px-6 py-2 rounded-full font-semibold transition-colors text-sm md:text-base">
-                            Add to Cart
+                        <button
+                            onClick={handleAddToCart}
+                            disabled={isAdding || product.stock === 0}
+                            className="bg-white text-emerald-600 border-2 border-emerald-600 hover:bg-emerald-50 px-6 py-2 rounded-full font-semibold transition-colors text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            {isAdding ? 'Adding...' : product.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
                         </button>
                     </div>
                 </div>

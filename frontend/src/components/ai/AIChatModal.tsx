@@ -208,7 +208,7 @@ export default function AIChatModal({ isOpen, onClose }: AIChatModalProps) {
                             onChange={(e) => setInput(e.target.value)}
                             onKeyPress={(e) => e.key === 'Enter' && !loading && sendMessage()}
                             placeholder="Ask about meals, recipes, or health tips..."
-                            className="flex-1 border border-gray-300 rounded-full px-4 py-3 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all"
+                            className="flex-1 border border-gray-300 rounded-full px-4 py-3 text-gray-900 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all"
                             disabled={loading}
                         />
                         <button

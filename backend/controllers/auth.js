@@ -164,6 +164,21 @@ class AuthController {
             })
         }
     }
+
+    // Verify if access token is still valid
+    async verifyToken(req, res) {
+        // If this endpoint is reached, token is valid (checked by isAuth middleware)
+        res.json({
+            success: true,
+            message: "Token is valid",
+            user: {
+                id: req.user._id,
+                name: req.user.name,
+                email: req.user.email,
+                role: req.user.role
+            }
+        })
+    }
 }
 
 module.exports = new AuthController()

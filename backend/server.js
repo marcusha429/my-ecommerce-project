@@ -36,6 +36,14 @@ app.use('/api/products', productRoutes)
 const aiRoutes = require('./routes/ai')
 app.use('/api/ai', aiRoutes)
 
+/* Cart Route */
+const cartRoutes = require('./routes/cart')
+app.use('/api/cart', cartRoutes)
+
+/* Upload Route */
+const uploadRoutes = require('./routes/upload')
+app.use('/api/upload', uploadRoutes)
+
 //port
 const PORT = process.env.PORT || 5000
 

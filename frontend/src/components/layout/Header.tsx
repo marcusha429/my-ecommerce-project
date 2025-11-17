@@ -19,13 +19,15 @@ interface HeaderProps {
     userEmail?: string
     isLoggedIn?: boolean
     userRole?: string
+    cartItemCount?: number
 }
 
 export default function Header({
     userName = 'John Doe',
     userEmail = 'john@example.com',
     isLoggedIn = false, //default
-    userRole = 'customer'
+    userRole = 'customer',
+    cartItemCount = 0
 }: HeaderProps) {
 
     const handleSearch = (query: string) => {
@@ -68,9 +70,11 @@ export default function Header({
                     >
                         <HiShoppingCart className='w-6 h-6 text-gray-700 group-hover:text-emerald-600 transition-colors' />
                         {/* Cart badge - shows item count */}
-                        <span className='absolute -top-1 -right-1 bg-emerald-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center'>
-                            3
-                        </span>
+                        {cartItemCount > 0 && (
+                            <span className='absolute -top-1 -right-1 bg-emerald-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center'>
+                                {cartItemCount}
+                            </span>
+                        )}
                     </Link>
 
                     {/* 5. Admin Portal Link (only for admins) */}

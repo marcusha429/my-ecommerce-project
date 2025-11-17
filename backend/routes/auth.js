@@ -1,6 +1,7 @@
 const express = require('express')
 const Router = express.Router()
 const authController = require('../controllers/auth')
+const { isAuth } = require('../middleware/auth')
 
 const {signupValidation, signinValidation, handleValidationErrors} = require('../middleware/validation')
 
@@ -10,6 +11,7 @@ Router.post('/signup', signupRateLimit, signupValidation, handleValidationErrors
 Router.post('/signin', signinRateLimit, signinValidation, handleValidationErrors, authController.postSignin)
 Router.post('/refresh-token', refreshTokenRateLimit, authController.refreshToken)
 Router.post('/logout', authController.logout)
+Router.get('/verify', isAuth, authController.verifyToken)
 
 
 module.exports = Router

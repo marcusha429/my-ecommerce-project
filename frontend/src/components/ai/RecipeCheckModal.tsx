@@ -112,7 +112,7 @@ export default function RecipeCheckModal({ isOpen, onClose, cartItems }: RecipeC
                                     value={recipeName}
                                     onChange={(e) => setRecipeName(e.target.value)}
                                     placeholder="e.g., Pho, Spaghetti Carbonara, Pad Thai..."
-                                    className="w-full border-2 border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all"
+                                    className="w-full border-2 border-gray-300 rounded-lg px-4 py-3 text-gray-900 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all"
                                     autoFocus
                                 />
                                 <button
