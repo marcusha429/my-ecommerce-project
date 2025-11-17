@@ -132,6 +132,24 @@ const deleteProduct = async (req, res) => {
     }
 }
 
+const searchProducts = async (req, res) => {
+    try {
+        const { q } = req.query //get search query from url params
+        if (!q || q.trim() === '') {
+            return res.json([])
+        }
+        //search prods where name contains the query
+        const products = await Product.find({
+            name: { $regex: q, $options: 'i' }
+        }).limit(10).select('name price images category _id') //only return needed fields
+        res.json(products)
+    } catch (error) {
+        res.status(500).json({
+            error: error.message
+        })
+    }
+}
+
 module.exports = {
     getAllProducts,
     getProductById,
@@ -140,5 +158,6 @@ module.exports = {
     getProductsByCategory,
     createProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    searchProducts
 }

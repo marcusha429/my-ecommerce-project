@@ -1,9 +1,10 @@
 const express = require('express')
 const router = express.Router()
 const adminAuth = require('../middleware/adminAuth')
-const { getAllProducts, getProductById, getToppickProducts, getPopularProducts, getProductsByCategory, createProduct, updateProduct, deleteProduct } = require('../controllers/product')
+const { getAllProducts, getProductById, getToppickProducts, getPopularProducts, getProductsByCategory, createProduct, updateProduct, deleteProduct, searchProducts } = require('../controllers/product')
 //get api
 router.get('/', getAllProducts)
+router.get('/search', searchProducts)
 router.get('/toppick', getToppickProducts)
 router.get('/popular', getPopularProducts)
 router.get('/category/:categoryName', getProductsByCategory)

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { api } from '@/lib/api'
 import NutritionSearchModal from '@/components/NutritionSearchModal'
 import { NutritionData } from '@/lib/usda'
+import ImageUpload from '@/components/admin/ImageUpload'
 
 export default function AddProductPage() {
     const router = useRouter()
@@ -43,6 +44,10 @@ export default function AddProductPage() {
         if (type === 'checkbox') {
             const checked = (e.target as HTMLInputElement).checked
             setFormData(prev => ({ ...prev, [name]: checked }))
+        } else if (name === 'price' && value && !isNaN(parseFloat(value))) {
+            // Format price to 2 decimal places
+            const formatted = parseFloat(value).toFixed(2)
+            setFormData(prev => ({ ...prev, [name]: formatted }))
         } else {
             setFormData(prev => ({ ...prev, [name]: value }))
         }
@@ -221,17 +226,50 @@ export default function AddProductPage() {
                     </div>
                 </div>
 
-                {/* Image URL */}
+                {/* Product Images */}
                 <div>
-                    <label className='block text-sm font-medium text-gray-700 mb-2'>Image URL</label>
-                    <input
-                        type='url'
-                        value={formData.images[0]}
-                        onChange={(e) => setFormData(prev => ({ ...prev, images: [e.target.value] }))}
-                        className='w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-gray-700'
-                        placeholder='https://example.com/image.jpg'
+                    <label className='block text-sm font-medium text-gray-700 mb-2'>Product Images</label>
+                    <ImageUpload
+                        onImageUploaded={(imageUrl) => {
+                            setFormData(prev => ({
+                                ...prev,
+                                images: [...prev.images.filter(img => img !== ''), imageUrl]
+                            }))
+                        }}
+                        maxImages={5}
                     />
-                    <p className='text-xs text-gray-500 mt-1'>Enter a direct URL to the product image</p>
+
+                    {/* Display uploaded images */}
+                    {formData.images.filter(img => img !== '').length > 0 && (
+                        <div className='mt-4'>
+                            <p className='text-sm font-medium text-gray-700 mb-2'>
+                                Uploaded Images ({formData.images.filter(img => img !== '').length})
+                            </p>
+                            <div className='grid grid-cols-4 gap-2'>
+                                {formData.images.filter(img => img !== '').map((img, idx) => (
+                                    <div key={idx} className='relative group'>
+                                        <img
+                                            src={img}
+                                            alt={`Product ${idx + 1}`}
+                                            className='w-full h-24 object-cover rounded border border-gray-200'
+                                        />
+                                        <button
+                                            type='button'
+                                            onClick={() => {
+                                                setFormData(prev => ({
+                                                    ...prev,
+                                                    images: prev.images.filter((_, i) => i !== idx)
+                                                }))
+                                            }}
+                                            className='absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity'
+                                        >
+                                            ×
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
                 </div>
 
                 {/* Unit & Weight - Side by side */}
