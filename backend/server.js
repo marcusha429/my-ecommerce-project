@@ -57,8 +57,8 @@ app.get('/', (req, res) => {
     res.send('API is running...')
 })
 
-// Only listen when running locally (not on Vercel)
-if (process.env.NODE_ENV !== 'production') {
+// For local development
+if (require.main === module) {
     app.listen(PORT, () => {
         console.log(`Server is running on PORT ${PORT}...`)
     })
