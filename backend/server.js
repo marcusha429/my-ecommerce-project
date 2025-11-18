@@ -9,7 +9,11 @@ const app = express()
 // app.use(helmet()) // Disabled for Vercel serverless
 
 app.use(cors({
-    origin: process.env.FRONTEND_URL || '*',
+    origin: [
+        'https://groceryhub-frontend.vercel.app',
+        'https://groceryhub-frontend-djmyc68xs-marcus-has-projects.vercel.app',
+        process.env.FRONTEND_URL
+    ].filter(Boolean),
     credentials: true
 }))
 app.use(express.json())
