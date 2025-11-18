@@ -9,9 +9,7 @@ const app = express()
 app.use(helmet())
 
 app.use(cors({
-    origin: process.env.NODE_ENV === 'production'
-        ? process.env.FRONTEND_URL
-        : 'http://localhost:3000',
+    origin: process.env.FRONTEND_URL || '*',
     credentials: true
 }))
 app.use(express.json())
@@ -49,9 +47,29 @@ app.use('/api/upload', uploadRoutes)
 //port
 const PORT = process.env.PORT || 5000
 
-mongoose.connect(process.env.MONGO_URI)
-    .then(() => console.log('Connected to MONGODB'))
-    .catch((err => console.log(err)))
+// MongoDB connection with serverless optimization
+let isConnected = false
+
+const connectDB = async () => {
+    if (isConnected) {
+        console.log('Using existing MongoDB connection')
+        return
+    }
+
+    try {
+        await mongoose.connect(process.env.MONGO_URI, {
+            serverSelectionTimeoutMS: 5000,
+        })
+        isConnected = true
+        console.log('Connected to MongoDB')
+    } catch (error) {
+        console.error('MongoDB connection error:', error)
+        throw error
+    }
+}
+
+// Connect immediately for serverless
+connectDB().catch(err => console.error('Initial DB connection failed:', err))
 
 app.get('/', (req, res) => {
     res.send('API is running...')
