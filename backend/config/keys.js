@@ -5,10 +5,14 @@ const config = {
     PORT: process.env.PORT || 5000
 }
 
-//validate all environment
+//validate all environment (only warn in production, don't crash)
 for (const [key,value] of Object.entries(config)){
     if (!value && key !== 'PORT'){ //skip PORT check since it has a default value
-        throw new Error(`${key} is required`)
+        if (process.env.NODE_ENV === 'production') {
+            console.warn(`⚠️  Warning: ${key} is not set`)
+        } else {
+            throw new Error(`${key} is required`)
+        }
     }
 }
 
