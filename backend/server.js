@@ -1,12 +1,12 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
-const helmet = require('helmet')
+// const helmet = require('helmet') // Disabled for Vercel serverless
 require('dotenv').config()
 
 const app = express()
 //security middleware
-app.use(helmet())
+// app.use(helmet()) // Disabled for Vercel serverless
 
 app.use(cors({
     origin: process.env.FRONTEND_URL || '*',
