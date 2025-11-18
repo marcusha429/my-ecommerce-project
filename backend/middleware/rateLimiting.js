@@ -1,53 +1,18 @@
-const rateLimit = require('express-rate-limit')
+// NOTE: express-rate-limit doesn't work well in serverless (state is lost between invocations)
+// For production serverless, consider using Vercel's built-in rate limiting or a service like Upstash Redis
+// For now, these are no-op middlewares that just pass through
 
-//limit login attempts (prevent brute-force)
-const signinRateLimit = rateLimit({
-    windowMs: 15*60*1000, //15m
-    max: 5, //5 attemps
-    message: {
-        success: false,
-        message: "Too many login attempts from this IP, please try again after 15 minutes"
-    },
-    standardHeaders: true, //return rate limit info in RateLimit-* headers
-    legacyHeaders: false, //Disable X-RateLimit-* headers
-    skipSuccessfulRequests: true, //don't count successful requests
-})
+const createNoOpRateLimit = (name) => (req, res, next) => {
+    // In serverless, we skip rate limiting
+    // TODO: Implement serverless-compatible rate limiting with Redis/Upstash
+    console.log(`[${name}] Rate limiting skipped in serverless mode`)
+    next()
+}
 
-//limit signup attemps (prevent spam accounts)
-const signupRateLimit = rateLimit({
-    windowMs: 60*60*1000, //1 hour
-    max: 3, //3 signup attemps
-    message: {
-        success: false,
-        message: "Too many signup attempts from this IP, please try again after an hour"
-    },
-    standardHeaders: true,
-    legacyHeaders: false,
-})
-
-//rate limit for password for refresh token requests 
-const refreshTokenRateLimit = rateLimit({
-    windowMs: 15*60*1000, //15m
-    max: 10, //10 refresh attemps per IP per window
-    message:{
-        success: false,
-        message: "Too many token requests from this IP, please try again later"
-    },
-    standardHeaders: true,
-    legacyHeaders: false,
-})
-
-//general API rate limit (API protection)
-const generalApiRateLimit = rateLimit({
-    windowMs: 15*60*1000, //15m
-    max: 100,   //100 requests per IP per window
-    message:{
-        success: false,
-        message: "Too many requests from this IP, please try again later"
-    },
-    standardHeaders: true,
-    legacyHeaders: false,
-})
+const signinRateLimit = createNoOpRateLimit('signin')
+const signupRateLimit = createNoOpRateLimit('signup')
+const refreshTokenRateLimit = createNoOpRateLimit('refresh-token')
+const generalApiRateLimit = createNoOpRateLimit('general-api')
 
 module.exports = {
     signinRateLimit,
