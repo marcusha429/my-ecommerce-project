@@ -1,8 +1,18 @@
 const { GoogleGenerativeAI } = require('@google/generative-ai')
 
-// Google Gemini API Configuration
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY
-const genAI = new GoogleGenerativeAI(GEMINI_API_KEY)
+// Lazy initialization to prevent crashes on import
+let genAI = null
+
+function getGenAI() {
+    if (!genAI) {
+        const GEMINI_API_KEY = process.env.GEMINI_API_KEY
+        if (!GEMINI_API_KEY) {
+            throw new Error('GEMINI_API_KEY is not set')
+        }
+        genAI = new GoogleGenerativeAI(GEMINI_API_KEY)
+    }
+    return genAI
+}
 
 /**
  * Send a chat message to Gemini AI
@@ -12,7 +22,8 @@ const genAI = new GoogleGenerativeAI(GEMINI_API_KEY)
  */
 async function chatWithGemini(prompt, options = {}) {
     try {
-        const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' })
+        const ai = getGenAI()
+        const model = ai.getGenerativeModel({ model: 'gemini-2.5-flash' })
 
         const result = await model.generateContent(prompt)
         const response = await result.response
