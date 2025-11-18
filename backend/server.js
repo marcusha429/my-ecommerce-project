@@ -29,24 +29,24 @@ app.use(cookieParser())
 */
 
 /* Auth Route */
-// const authRoutes = require('./routes/auth')
-// app.use('/api/auth', authRoutes)
+const authRoutes = require('./routes/auth')
+app.use('/api/auth', authRoutes)
 
 /* Product Route */
 const productRoutes = require('./routes/product')
 app.use('/api/products', productRoutes)
 
-/* Cart Route - DISABLED FOR NOW */
-// const cartRoutes = require('./routes/cart')
-// app.use('/api/cart', cartRoutes)
+/* Cart Route */
+const cartRoutes = require('./routes/cart')
+app.use('/api/cart', cartRoutes)
 
-/* AI Route - DISABLED FOR NOW */
-// const aiRoutes = require('./routes/ai')
-// app.use('/api/ai', aiRoutes)
+/* AI Route */
+const aiRoutes = require('./routes/ai')
+app.use('/api/ai', aiRoutes)
 
-/* Upload Route - DISABLED FOR NOW */
-// const uploadRoutes = require('./routes/upload')
-// app.use('/api/upload', uploadRoutes)
+/* Upload Route */
+const uploadRoutes = require('./routes/upload')
+app.use('/api/upload', uploadRoutes)
 
 //port
 const PORT = process.env.PORT || 5000
