@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { API_URL } from '@/lib/api'
 
 interface RecipeCheckModalProps {
     isOpen: boolean
@@ -29,7 +30,7 @@ export default function RecipeCheckModal({ isOpen, onClose, cartItems }: RecipeC
                 return
             }
 
-            const response = await fetch('http://localhost:5000/api/ai/check-recipe', {
+            const response = await fetch(`${API_URL}/api/ai/check-recipe`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

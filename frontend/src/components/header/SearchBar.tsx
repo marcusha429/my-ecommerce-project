@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { HiMagnifyingGlass } from 'react-icons/hi2'
+import { API_URL } from '@/lib/api'
 
 interface SearchBarProps {
     onSearch: (query: string) => void
@@ -35,7 +36,7 @@ export default function SearchBar({ onSearch, placeholder = 'Search products...'
         setIsLoading(true)
         const timer = setTimeout(async () => {
             try {
-                const response = await fetch(`http://localhost:5000/api/products/search?q=${encodeURIComponent(searchQuery.trim())}`)
+                const response = await fetch(`${API_URL}/api/products/search?q=${encodeURIComponent(searchQuery.trim())}`)
                 const data = await response.json()
                 setSuggestions(data)
                 setShowSuggestions(true)

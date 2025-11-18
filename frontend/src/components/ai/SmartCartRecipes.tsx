@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { API_URL } from '@/lib/api'
 import RecipeCheckModal from './RecipeCheckModal'
 
 interface MissingItem {
@@ -124,7 +125,7 @@ export default function SmartCartRecipes({ cartItems }: SmartCartRecipesProps) {
             }
 
             // Call backend API
-            const response = await fetch('http://localhost:5000/api/ai/analyze-cart', {
+            const response = await fetch(`${API_URL}/api/ai/analyze-cart`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

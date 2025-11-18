@@ -1,4 +1,6 @@
-const API_URL = 'http://localhost:5000/api/cart'
+import { API_URL as BASE_URL } from '@/lib/api'
+
+const API_URL = `${BASE_URL}/api/cart`
 
 // Helper to get auth token
 const getAuthHeader = () => {

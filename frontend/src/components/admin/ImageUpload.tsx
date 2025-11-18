@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { API_URL } from '@/lib/api'
 
 interface ImageUploadProps {
     onImageUploaded: (imageUrl: string, publicId: string) => void
@@ -56,7 +57,7 @@ export default function ImageUpload({ onImageUploaded, maxImages = 5 }: ImageUpl
             formData.append('image', file)
 
             // Upload to backend
-            const response = await fetch('http://localhost:5000/api/upload/image', {
+            const response = await fetch(`${API_URL}/api/upload/image`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`
