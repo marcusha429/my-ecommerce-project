@@ -32,17 +32,17 @@ app.use('/api/auth', authRoutes)
 const productRoutes = require('./routes/product')
 app.use('/api/products', productRoutes)
 
-/* AI Route */
-const aiRoutes = require('./routes/ai')
-app.use('/api/ai', aiRoutes)
-
 /* Cart Route */
 const cartRoutes = require('./routes/cart')
 app.use('/api/cart', cartRoutes)
 
+/* AI Route */
+// const aiRoutes = require('./routes/ai')
+// app.use('/api/ai', aiRoutes)
+
 /* Upload Route */
-const uploadRoutes = require('./routes/upload')
-app.use('/api/upload', uploadRoutes)
+// const uploadRoutes = require('./routes/upload')
+// app.use('/api/upload', uploadRoutes)
 
 //port
 const PORT = process.env.PORT || 5000
