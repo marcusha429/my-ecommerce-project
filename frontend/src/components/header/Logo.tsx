@@ -7,13 +7,13 @@ interface LogoProps {
 export default function Logo({ isLoggedIn = false }: LogoProps) {
     const handleClick = () => {
         //redirect to dashboard
-        const destination = isLoggedIn ? '/dashboard' : '/'
+        const destination = isLoggedIn ? '/dashboard' : '/dashboard'
         window.location.href = destination
     }
 
     return (
         <div className='flex-shrirk-0 cursor-pointer' onClick={handleClick}>
-            <Image src='/next.svg' alt='Logo' width={100} height={40} className='dark:invert'></Image>
+            <Image src='/logos.png' alt='Logo' width={100} height={40} className=''></Image>
         </div>
     )
 }
