@@ -155,11 +155,11 @@ exports.checkRecipe = async (req, res) => {
             items = cart.items
         }
 
-        // Check custom recipe with Gemini AI
-        const analysis = await checkCustomRecipe(recipeName, items)
-
-        // Enhance missing items with actual product IDs
+        // Get all available products first
         const allProducts = await Product.find().select('name price unit')
+
+        // Check custom recipe with Gemini AI (pass available products)
+        const analysis = await checkCustomRecipe(recipeName, items, allProducts)
 
         if (analysis.missingItems) {
             analysis.missingItems = analysis.missingItems.map(item => {

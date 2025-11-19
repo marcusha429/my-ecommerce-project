@@ -72,10 +72,13 @@ If asked about non-grocery topics, politely redirect to grocery-related question
  */
 async function analyzeCartForRecipes(cartItems, availableProducts = []) {
     const itemsList = cartItems.map(item => item.name).join(', ')
+    const availableProductsList = availableProducts.map(p => p.name).join(', ')
 
     const prompt = `You are a recipe expert. Analyze shopping carts and suggest practical, healthy recipes.
 
 Cart Items: ${itemsList}
+
+Available Products in Store (ONLY suggest these as missing items): ${availableProductsList}
 
 Task: Suggest 3 practical recipes using these items.
 
@@ -83,11 +86,17 @@ For each recipe, provide:
 1. Recipe name
 2. Brief description (1 sentence)
 3. Which cart items are used
-4. What additional items are needed (if any, max 3 items)
+4. What additional items are needed - IMPORTANT: ONLY suggest items from "Available Products in Store" list above
 5. Difficulty level (Easy/Medium/Hard)
 6. Cook time
 7. Servings
 8. Step-by-step instructions (5-7 steps)
+
+CRITICAL RULES:
+- ONLY suggest missing items that exist in the "Available Products in Store" list
+- If you can't make a complete recipe with available products, suggest a simpler recipe
+- DO NOT suggest any ingredients not in the available products list
+- If no missing items needed, set missingItems to empty array []
 
 IMPORTANT: Return ONLY a valid JSON array with this exact structure (no extra text before or after):
 [
@@ -95,7 +104,7 @@ IMPORTANT: Return ONLY a valid JSON array with this exact structure (no extra te
     "title": "Recipe Name",
     "description": "Brief description",
     "itemsInCart": ["item1", "item2"],
-    "missingItems": [{"name": "item", "quantity": 1, "unit": "lb", "estimatedPrice": 3.99}],
+    "missingItems": [{"name": "exact product name from available list", "quantity": "1 cup", "estimatedPrice": 3.99}],
     "difficulty": "Easy",
     "cookTime": "30 mins",
     "servings": 4,
@@ -128,20 +137,29 @@ Only suggest recipes where user has at least 50% of ingredients.`
  * Check if user's custom recipe is possible with cart items
  * @param {string} recipeName - Name of recipe user wants to make
  * @param {Array} cartItems - Items in user's cart
+ * @param {Array} availableProducts - All available products in database
  * @returns {Promise<Object>} Analysis of what user has vs needs
  */
-async function checkCustomRecipe(recipeName, cartItems) {
+async function checkCustomRecipe(recipeName, cartItems, availableProducts = []) {
     const itemsList = cartItems.map(item => item.name).join(', ')
+    const availableProductsList = availableProducts.map(p => p.name).join(', ')
 
     const prompt = `You are a recipe expert. Check if recipes are possible with given ingredients.
 
 User wants to make: "${recipeName}"
 They have these items: ${itemsList}
 
+Available Products in Store (ONLY suggest these as missing items): ${availableProductsList}
+
 Analyze:
 1. Can they make this recipe with what they have?
-2. What additional items do they need?
+2. What additional items do they need? - IMPORTANT: ONLY suggest items from "Available Products in Store" list
 3. Provide brief recipe instructions
+
+CRITICAL RULES:
+- ONLY suggest missing items that exist in the "Available Products in Store" list
+- If an ingredient is not available in store, adapt the recipe or mark as "not fully possible"
+- Use exact product names from the available products list
 
 IMPORTANT: Return ONLY a valid JSON object (no extra text before or after):
 {
@@ -149,7 +167,7 @@ IMPORTANT: Return ONLY a valid JSON object (no extra text before or after):
   "canMake": true,
   "percentageComplete": 80,
   "itemsTheyHave": ["item1", "item2"],
-  "missingItems": [{"name": "item", "quantity": 1, "unit": "lb", "estimatedPrice": 3.99}],
+  "missingItems": [{"name": "exact product name from available list", "quantity": "1 cup", "estimatedPrice": 3.99}],
   "instructions": ["step1", "step2", "step3"],
   "cookTime": "30 mins",
   "servings": 4
