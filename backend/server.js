@@ -10,8 +10,7 @@ const app = express()
 
 app.use(cors({
     origin: [
-        'https://groceryhub-frontend.vercel.app',
-        'https://groceryhub-frontend-djmyc68xs-marcus-has-projects.vercel.app',
+        'https://frontend-alpha-three-97.vercel.app',
         process.env.FRONTEND_URL
     ].filter(Boolean),
     credentials: true
