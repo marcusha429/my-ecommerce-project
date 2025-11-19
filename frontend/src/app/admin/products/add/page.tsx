@@ -160,14 +160,12 @@ export default function AddProductPage() {
                     <div>
                         <label className='block text-sm font-medium text-gray-700 mb-2'>Price ($)</label>
                         <input
-                            type='number'
+                            type='text'
                             name='price'
                             value={formData.price}
                             onChange={handleChange}
                             required
-                            min='0'
-                            step='0.01'
-                            className='w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-gray-700'
+                            className='w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-black'
                             placeholder='0.00'
                         />
                     </div>

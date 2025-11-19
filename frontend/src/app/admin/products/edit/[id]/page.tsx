@@ -140,7 +140,7 @@ export default function EditProductPage() {
                         onChange={handleChange}
                         placeholder='Product Name'
                         required
-                        className='w-full border border-gray-300 rounded px-4 py-2 focus:ring-2 focus:ring-emerald-500 focus:border-transparent'
+                        className='w-full border border-gray-300 rounded px-4 py-2 text-black focus:ring-2 focus:ring-emerald-500 focus:border-transparent'
                     />
                 </div>
                 {/*Description*/}
@@ -152,7 +152,7 @@ export default function EditProductPage() {
                         onChange={handleChange}
                         required
                         rows={4}
-                        className='w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent'
+                        className='w-full px-4 py-2 border border-gray-300 rounded-lg text-black focus:ring-2 focus:ring-emerald-500 focus:border-transparent'
                     />
                 </div>
                 {/*Price ans Stock*/}
@@ -160,14 +160,13 @@ export default function EditProductPage() {
                     <div>
                         <label className='block text-sm font-medium text-gray-700 mb-2'>Price ($)</label>
                         <input
-                            type='number'
+                            type='text'
                             name='price'
                             value={formData.price}
                             onChange={handleChange}
                             required
-                            min='0'
-                            step='0.01'
-                            className='w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent'
+                            placeholder='0.00'
+                            className='w-full px-4 py-2 border border-gray-300 rounded-lg text-black focus:ring-2 focus:ring-emerald-500 focus:border-transparent'
                         />
                     </div>
                     <div>
@@ -179,7 +178,7 @@ export default function EditProductPage() {
                             onChange={handleChange}
                             required
                             min='0'
-                            className='w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent'
+                            className='w-full px-4 py-2 border border-gray-300 rounded-lg text-black focus:ring-2 focus:ring-emerald-500 focus:border-transparent'
                         />
                     </div>
                 </div>
@@ -193,7 +192,7 @@ export default function EditProductPage() {
                             value={formData.category}
                             onChange={handleChange}
                             required
-                            className='w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent'
+                            className='w-full px-4 py-2 border border-gray-300 rounded-lg text-black focus:ring-2 focus:ring-emerald-500 focus:border-transparent'
                         />
                     </div>
 
@@ -205,7 +204,7 @@ export default function EditProductPage() {
                             value={formData.brand}
                             onChange={handleChange}
                             required
-                            className='w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent'
+                            className='w-full px-4 py-2 border border-gray-300 rounded-lg text-black focus:ring-2 focus:ring-emerald-500 focus:border-transparent'
                         />
                     </div>
                 </div>
