@@ -9,7 +9,8 @@ const app = express()
 //CORS must be before helmet for proper header ordering
 app.use(cors({
     origin: [
-        'https://frontend-alpha-three-97.vercel.app',
+        'https://groceryhub.vercel.app',
+        'https://frontend-alpha-three-97.vercel.app', // Keep old domain during transition
         process.env.FRONTEND_URL
     ].filter(Boolean),
     credentials: true
