@@ -125,7 +125,9 @@ IMPORTANT: Return ONLY a valid JSON array with this exact structure (no extra te
 You MUST suggest at least 2 recipes. Be creative and flexible!`
 
     try {
+        console.log('Analyzing cart with', cartItems.length, 'items and', availableProducts.length, 'available products')
         const response = await chatWithGemini(prompt)
+        console.log('Raw Gemini response length:', response.length)
 
         // Extract JSON from response (handle cases where AI adds explanation)
         const jsonMatch = response.match(/\[[\s\S]*\]/)
@@ -135,9 +137,11 @@ You MUST suggest at least 2 recipes. Be creative and flexible!`
         }
 
         const recipes = JSON.parse(jsonMatch[0])
+        console.log('Successfully parsed', recipes.length, 'recipes from AI')
         return recipes
     } catch (error) {
-        console.error('Recipe analysis error:', error)
+        console.error('Recipe analysis error:', error.message)
+        console.error('Full error:', error)
         // Return fallback empty array
         return []
     }
