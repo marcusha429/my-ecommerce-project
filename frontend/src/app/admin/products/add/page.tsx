@@ -44,11 +44,8 @@ export default function AddProductPage() {
         if (type === 'checkbox') {
             const checked = (e.target as HTMLInputElement).checked
             setFormData(prev => ({ ...prev, [name]: checked }))
-        } else if (name === 'price' && value && !isNaN(parseFloat(value))) {
-            // Format price to 2 decimal places
-            const formatted = parseFloat(value).toFixed(2)
-            setFormData(prev => ({ ...prev, [name]: formatted }))
         } else {
+            // Allow free typing without formatting
             setFormData(prev => ({ ...prev, [name]: value }))
         }
     }
