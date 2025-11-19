@@ -74,36 +74,46 @@ async function analyzeCartForRecipes(cartItems, availableProducts = []) {
     const itemsList = cartItems.map(item => item.name).join(', ')
     const availableProductsList = availableProducts.map(p => p.name).join(', ')
 
-    const prompt = `You are a recipe expert. Analyze shopping carts and suggest practical, healthy recipes.
+    const prompt = `You are an international recipe expert. Analyze shopping carts and suggest practical, delicious recipes from ANY cuisine (Asian, Western, Mediterranean, Latin, etc).
 
 Cart Items: ${itemsList}
 
 Available Products in Store (ONLY suggest these as missing items): ${availableProductsList}
 
-Task: Suggest 3 practical recipes using these items.
+Task: Suggest 3 practical recipes using these items. Think creatively about what dishes can be made with the available ingredients, regardless of cuisine type.
+
+EXAMPLES OF WHAT YOU CAN SUGGEST:
+- Asian: Fried Rice, Pho, Stir Fry, Noodle Soup, Spring Rolls
+- Western: Pasta, Salad, Sandwiches, Grilled Dishes
+- Mediterranean: Greek Salad, Hummus Bowls, Grilled Vegetables
+- Latin: Tacos, Rice Bowls, Bean Dishes
+- Simple: Soup, Scrambled Eggs, Roasted Vegetables
 
 For each recipe, provide:
-1. Recipe name
+1. Recipe name (from any cuisine)
 2. Brief description (1 sentence)
-3. Which cart items are used
-4. What additional items are needed - IMPORTANT: ONLY suggest items from "Available Products in Store" list above
+3. Which cart items are used (match EXACTLY with cart item names)
+4. What additional items are needed - IMPORTANT: ONLY from "Available Products in Store" list
 5. Difficulty level (Easy/Medium/Hard)
 6. Cook time
 7. Servings
 8. Step-by-step instructions (5-7 steps)
 
 CRITICAL RULES:
+- Be FLEXIBLE and CREATIVE - combine ingredients to make tasty dishes from any cuisine
 - ONLY suggest missing items that exist in the "Available Products in Store" list
-- If you can't make a complete recipe with available products, suggest a simpler recipe
+- If you can't find exact traditional ingredients, adapt and suggest what IS available
 - DO NOT suggest any ingredients not in the available products list
 - If no missing items needed, set missingItems to empty array []
+- ALWAYS suggest at least 2-3 recipes, even with limited ingredients
+- Match cart item names EXACTLY as they appear in the list
 
 IMPORTANT: Return ONLY a valid JSON array with this exact structure (no extra text before or after):
 [
   {
     "title": "Recipe Name",
     "description": "Brief description",
-    "itemsInCart": ["item1", "item2"],
+    "itemsInCart": ["exact cart item names"],
     "missingItems": [{"name": "exact product name from available list", "quantity": "1 cup", "estimatedPrice": 3.99}],
     "difficulty": "Easy",
     "cookTime": "30 mins",
@@ -112,7 +122,7 @@ IMPORTANT: Return ONLY a valid JSON array with this exact structure (no extra te
   }
 ]
 
-Only suggest recipes where user has at least 50% of ingredients.`
+You MUST suggest at least 2 recipes. Be creative and flexible!`
 
     try {
         const response = await chatWithGemini(prompt)
