@@ -193,7 +193,7 @@ export default function AddProductPage() {
                             value={formData.category}
                             onChange={handleChange}
                             required
-                            className='w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-gray-700'
+                            className='w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-black'
                         >
                             <option value=''>Select a category</option>
                             <option value='fruits-vegetables'>Fruits & Vegetables</option>

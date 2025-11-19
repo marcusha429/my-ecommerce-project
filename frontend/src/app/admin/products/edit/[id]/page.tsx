@@ -183,14 +183,22 @@ export default function EditProductPage() {
                 <div className='grid grid-cols-2 gap-4'>
                     <div>
                         <label className='block text-sm font-medium text-gray-700 mb-2'>Category</label>
-                        <input
-                            type='text'
+                        <select
                             name='category'
                             value={formData.category}
                             onChange={handleChange}
                             required
                             className='w-full px-4 py-2 border border-gray-300 rounded-lg text-black focus:ring-2 focus:ring-emerald-500 focus:border-transparent'
-                        />
+                        >
+                            <option value=''>Select a category</option>
+                            <option value='fruits-vegetables'>Fruits & Vegetables</option>
+                            <option value='dairy-eggs'>Dairy & Eggs</option>
+                            <option value='meat-seafood'>Meat & Seafood</option>
+                            <option value='bakery'>Bakery</option>
+                            <option value='beverages'>Beverages</option>
+                            <option value='snacks'>Snacks</option>
+                            <option value='pantry'>Pantry Staples</option>
+                        </select>
                     </div>
 
                     <div>
