@@ -1,19 +1,24 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
-// const helmet = require('helmet') // Disabled for Vercel serverless
+const helmet = require('helmet')
 require('dotenv').config()
 
 const app = express()
-//security middleware
-// app.use(helmet()) // Disabled for Vercel serverless
 
+//CORS must be before helmet for proper header ordering
 app.use(cors({
     origin: [
         'https://frontend-alpha-three-97.vercel.app',
         process.env.FRONTEND_URL
     ].filter(Boolean),
     credentials: true
+}))
+
+//Security middleware - helmet works fine in serverless
+app.use(helmet({
+    contentSecurityPolicy: false, // Disable CSP for now to avoid blocking resources
+    crossOriginEmbedderPolicy: false
 }))
 app.use(express.json())
 
