@@ -25,72 +25,7 @@ interface Recipe {
     difficulty: 'Easy' | 'Meduim' | 'Hard'
 }
 
-//Mock data
-const mockRecipes: Recipe[] = [
-    {
-        id: '1',
-        title: 'Spinach & Egg Breakfast Bowl',
-        description: 'Protein-packed healthy breakfast ready in 15 minutes',
-        imageUrl: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=400',
-        itemsInCart: ['Eggs', 'Baby Spinach', 'Milk'],
-        missingItems: [], // Complete - has everything!
-        instructions: [
-            'Heat a pan with olive oil over medium heat',
-            'Add spinach and sauté until wilted (2 mins)',
-            'Whisk eggs with milk, salt, and pepper',
-            'Pour eggs into pan and scramble gently',
-            'Serve hot with toast'
-        ],
-        cookTime: '15 min',
-        servings: 2,
-        difficulty: 'Easy'
-    },
-    {
-        id: '2',
-        title: 'Creamy Chicken Spinach Skillet',
-        description: 'One-pan dinner with tender chicken in creamy sauce',
-        imageUrl: 'https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=400',
-        itemsInCart: ['Chicken Breast', 'Baby Spinach', 'Milk'],
-        missingItems: [
-            { ingredient: 'Garlic', suggestedProduct: 'Fresh Garlic Bulb', quantity: '3 cloves', price: 1.99 },
-            { ingredient: 'Parmesan', suggestedProduct: 'Grated Parmesan Cheese', quantity: '1/2 cup', price: 4.99 },
-        ],
-        instructions: [
-            'Season chicken with salt and pepper, sear until golden',
-            'Remove chicken, sauté minced garlic in same pan',
-            'Add spinach and milk, simmer 3 minutes',
-            'Stir in parmesan until melted and creamy',
-            'Return chicken to pan, coat with sauce',
-            'Serve over rice or pasta'
-        ],
-        cookTime: '25 min',
-        servings: 4,
-        difficulty: 'Easy'
-    },
-    {
-        id: '3',
-        title: 'Mediterranean Chicken Salad',
-        description: 'Fresh and healthy grilled chicken salad',
-        imageUrl: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400',
-        itemsInCart: ['Chicken Breast', 'Baby Spinach'],
-        missingItems: [
-            { ingredient: 'Cherry Tomatoes', suggestedProduct: 'Organic Cherry Tomatoes', quantity: '1 cup', price: 3.49 },
-            { ingredient: 'Cucumber', suggestedProduct: 'Fresh Cucumber', quantity: '1 piece', price: 1.99 },
-            { ingredient: 'Feta Cheese', suggestedProduct: 'Crumbled Feta', quantity: '1/2 cup', price: 4.49 },
-        ],
-        instructions: [
-            'Grill or pan-sear chicken until cooked through',
-            'Chop tomatoes, cucumber, and spinach',
-            'Slice cooked chicken into strips',
-            'Toss vegetables with olive oil and lemon',
-            'Top with chicken and crumbled feta',
-            'Season with oregano and black pepper'
-        ],
-        cookTime: '20 min',
-        servings: 3,
-        difficulty: 'Easy'
-    }
-]
+// No more mock data - always use real AI suggestions from backend
 
 interface SmartCartRecipesProps {
     cartItems: any[]
@@ -115,11 +50,7 @@ export default function SmartCartRecipes({ cartItems }: SmartCartRecipesProps) {
             const token = localStorage.getItem('accessToken')
 
             if (!token) {
-                // If not logged in, use mock data
-                const ready = mockRecipes.filter(r => r.missingItems.length === 0)
-                const almost = mockRecipes.filter(r => r.missingItems.length > 0 && r.missingItems.length < 3)
-                setReadyRecipes(ready)
-                setAlmostReadyRecipes(almost)
+                // User must be logged in to use AI features
                 setLoading(false)
                 return
             }
@@ -147,11 +78,9 @@ export default function SmartCartRecipes({ cartItems }: SmartCartRecipesProps) {
             setAlmostReadyRecipes(almost)
         } catch (error: any) {
             console.error('Cart Analysis Error:', error)
-            // Fallback to mock data on error
-            const ready = mockRecipes.filter(r => r.missingItems.length === 0)
-            const almost = mockRecipes.filter(r => r.missingItems.length > 0 && r.missingItems.length < 3)
-            setReadyRecipes(ready)
-            setAlmostReadyRecipes(almost)
+            // Don't fall back to mock data - show empty state
+            setReadyRecipes([])
+            setAlmostReadyRecipes([])
         } finally {
             setLoading(false)
         }
@@ -222,19 +151,19 @@ export default function SmartCartRecipes({ cartItems }: SmartCartRecipesProps) {
                     <div className="p-6 space-y-4">
                         {readyRecipes.map((recipe) => (
                             <div key={recipe.id} className="border border-green-200 rounded-xl overflow-hidden hover:shadow-lg transition-all">
-                                <div className="flex gap-4 p-4 bg-green-50">
+                                <div className="flex flex-col sm:flex-row gap-4 p-4 bg-green-50">
                                     {/* Recipe Image */}
                                     <img
                                         src={recipe.imageUrl}
                                         alt={recipe.title}
-                                        className="w-24 h-24 rounded-lg object-cover"
+                                        className="w-full sm:w-24 h-48 sm:h-24 rounded-lg object-cover"
                                     />
 
                                     {/* Recipe Info */}
                                     <div className="flex-1">
                                         <h4 className="text-lg font-bold text-gray-800 mb-1">{recipe.title}</h4>
                                         <p className="text-sm text-gray-600 mb-2">{recipe.description}</p>
-                                        <div className="flex gap-4 text-xs text-gray-500">
+                                        <div className="flex flex-wrap gap-2 sm:gap-4 text-xs text-gray-500">
                                             <span>⏱️ {recipe.cookTime}</span>
                                             <span>👥 {recipe.servings} servings</span>
                                             <span>📊 {recipe.difficulty}</span>
@@ -245,7 +174,7 @@ export default function SmartCartRecipes({ cartItems }: SmartCartRecipesProps) {
                                     <div className="flex items-center">
                                         <button
                                             onClick={() => toggleRecipeDetails(recipe.id)}
-                                            className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-all shadow-md hover:shadow-lg whitespace-nowrap"
+                                            className="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-all shadow-md hover:shadow-lg whitespace-nowrap"
                                         >
                                             {expandedRecipe === recipe.id ? 'Hide Recipe' : 'Show Recipe'}
                                         </button>
@@ -301,12 +230,12 @@ export default function SmartCartRecipes({ cartItems }: SmartCartRecipesProps) {
                     <div className="p-6 space-y-4">
                         {almostReadyRecipes.map((recipe) => (
                             <div key={recipe.id} className="border border-orange-200 rounded-xl overflow-hidden hover:shadow-lg transition-all">
-                                <div className="flex gap-4 p-4 bg-orange-50">
+                                <div className="flex flex-col sm:flex-row gap-4 p-4 bg-orange-50">
                                     {/* Recipe Image */}
                                     <img
                                         src={recipe.imageUrl}
                                         alt={recipe.title}
-                                        className="w-24 h-24 rounded-lg object-cover"
+                                        className="w-full sm:w-24 h-48 sm:h-24 rounded-lg object-cover"
                                     />
 
                                     {/* Recipe Info */}
@@ -324,7 +253,7 @@ export default function SmartCartRecipes({ cartItems }: SmartCartRecipesProps) {
                                     <h5 className="font-semibold text-gray-700 mb-3">🛒 You need to buy:</h5>
                                     <div className="space-y-2 mb-4">
                                         {recipe.missingItems.map((item, idx) => (
-                                            <div key={idx} className="flex items-center justify-between p-3 bg-orange-50 rounded-lg">
+                                            <div key={idx} className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 bg-orange-50 rounded-lg gap-2">
                                                 <div className="flex-1">
                                                     <div className="font-medium text-gray-800">{item.ingredient}</div>
                                                     <div className="text-sm text-gray-600">{item.suggestedProduct} • {item.quantity}</div>
@@ -335,18 +264,19 @@ export default function SmartCartRecipes({ cartItems }: SmartCartRecipesProps) {
                                     </div>
 
                                     {/* Action Buttons */}
-                                    <div className="flex gap-3">
+                                    <div className="flex flex-col sm:flex-row gap-3">
                                         <button
                                             onClick={() => addMissingItemsToCart(recipe)}
-                                            className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-lg font-semibold transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+                                            className="w-full sm:flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-lg font-semibold transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2"
                                         >
                                             <span>➕</span>
-                                            Add Items & Show Recipe
+                                            <span className="hidden sm:inline">Add Items & Show Recipe</span>
+                                            <span className="sm:hidden">Add Items</span>
                                         </button>
                                         {expandedRecipe !== recipe.id && (
                                             <button
                                                 onClick={() => toggleRecipeDetails(recipe.id)}
-                                                className="px-6 bg-white border-2 border-orange-500 text-orange-600 hover:bg-orange-50 py-3 rounded-lg font-semibold transition-all"
+                                                className="w-full sm:w-auto px-6 bg-white border-2 border-orange-500 text-orange-600 hover:bg-orange-50 py-3 rounded-lg font-semibold transition-all"
                                             >
                                                 Preview Recipe
                                             </button>
