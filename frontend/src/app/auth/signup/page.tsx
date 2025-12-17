@@ -1,9 +1,11 @@
 'use client'
 
 import {useState} from 'react'
+import { useRouter } from 'next/navigation'
 import { authService, SignupData } from '@/lib/auth'
 
 export default function SignupPage(){
+    const router = useRouter()
     //name
     //email
     //password
@@ -45,7 +47,8 @@ export default function SignupPage(){
             const response = await authService.signup(signupData)
 
             if(response.success){
-                alert('Sign up successful')
+                alert('Sign up successful! Please sign in.')
+                router.push('/auth/signin')
             }else{
                 alert(`Signup failed: ${response.message}`)
             }
